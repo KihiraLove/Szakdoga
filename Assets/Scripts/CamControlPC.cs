@@ -1,17 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CamControlPC : MonoBehaviour
 {
     public float senX;
     public float senY;
 
-    public Transform orientation;
-
-    private float xRotation;
-    private float yRotation;
+    private float _xRotation;
+    private float _yRotation;
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +21,9 @@ public class CamControlPC : MonoBehaviour
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+        _yRotation += mouseX;
+        _xRotation -= mouseY;
         
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
     }
 }
