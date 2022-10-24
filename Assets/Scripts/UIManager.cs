@@ -43,9 +43,7 @@ public class UIManager : MonoBehaviour
 
     private string ConstructDebugString()
     {
-        return "Left rotation: " + _manager.CurrentRotation.GetCurrentRotationLeft() 
-               + "Right rotation: " + _manager.CurrentRotation.GetCurrentRotationRight() 
-               + "Upper rotation: " + _manager.CurrentRotation.GetCurrentRotationUp()  
-               + "Lower rotation: " + _manager.CurrentRotation.GetCurrentRotationDown();
+        return "Y rotation: " + _manager.CurrentRotation.Y + System.Environment.NewLine
+               + "X rotation: " + _manager.CurrentRotation.X;
     }
 }

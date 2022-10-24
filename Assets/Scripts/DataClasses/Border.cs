@@ -1,54 +1,74 @@
-﻿using UnityEngine;
+﻿using System;
+using DataExtractors;
+using UnityEngine;
 
 namespace DataClasses
 {
     public class Border
     {
-        private float[] _borderRotations;
+        private readonly float[] _borderRotationDegrees;
+        private DogDataExtractor _dog;
 
         public Border()
         {
-            _borderRotations = new float[4];
-        }
-        
-        public float GetBorderRotationLeft()
-        {
-            return _borderRotations[0];
+            _borderRotationDegrees = new float[4] { 0, 0, 0, 0 };
+            _dog = DogDataExtractor.Instance;
         }
 
-        public float GetBorderRotationRight()
-        {
-            return _borderRotations[1];
-        }
+        public Vector3 LeftBorder { get; private set; }
 
-        public float GetBorderRotationUp()
-        {
-            return _borderRotations[2];
-        }
+        public Vector3 RightBorder { get; private set; }
 
-        public float GetBorderRotationDown()
-        {
-            return _borderRotations[3];
-        }
+        public Vector3 UpperBorder { get; private set; }
 
-        public void SetBorderRotationLeft(float val)
+        public Vector3 LowerBorder { get; private set; }
+
+        public float LeftDegree
         {
-            _borderRotations[0] = val;
+            get => _borderRotationDegrees[0];
+            set
+            {
+                _borderRotationDegrees[0] = value;
+                double x = _dog.HorizontalX * Math.Cos(value) - _dog.HorizontalY * Math.Sin(value);
+                double z = _dog.HorizontalY * Math.Cos(value) + _dog.HorizontalX * Math.Sin(value);
+                LeftBorder = new Vector3((float)x, 0, (float)z);
+            }
         }
         
-        public void SetBorderRotationRight(float val)
+        public float RightDegree
         {
-            _borderRotations[1] = val;
+            get => _borderRotationDegrees[1];
+            set
+            {
+                _borderRotationDegrees[1] = value;
+                double x = _dog.HorizontalX * Math.Cos(value) - _dog.HorizontalY * Math.Sin(value);
+                double z = _dog.HorizontalY * Math.Cos(value) + _dog.HorizontalX * Math.Sin(value);
+                RightBorder = new Vector3((float)x, 0, (float)z);
+            }
         }
         
-        public void SetBorderRotationUp(float val)
+        public float UpperDegree
         {
-            _borderRotations[2] = val;
+            get => _borderRotationDegrees[2];
+            set
+            {
+                _borderRotationDegrees[2] = value;
+                double x = _dog.VerticalX * Math.Cos(value) - _dog.VerticalY * Math.Sin(value);
+                double z = _dog.VerticalY * Math.Cos(value) + _dog.VerticalX * Math.Sin(value);
+                UpperBorder = new Vector3((float)x, 0, (float)z);
+            }
         }
         
-        public void SetBorderRotationDown(float val)
+        public float LowerDegree
         {
-            _borderRotations[3] = val;
+            get => _borderRotationDegrees[3];
+            set
+            {
+                _borderRotationDegrees[3] = value;
+                double x = _dog.VerticalX * Math.Cos(value) - _dog.VerticalY * Math.Sin(value);
+                double z = _dog.VerticalY * Math.Cos(value) + _dog.VerticalX * Math.Sin(value);
+                LowerBorder = new Vector3((float)x, 0, (float)z);
+            }
         }
     }
 }
