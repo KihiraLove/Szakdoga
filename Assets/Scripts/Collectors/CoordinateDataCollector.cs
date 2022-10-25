@@ -31,13 +31,11 @@ namespace Collectors
         private DogData _dogData;
         
         //Properties
-        public float HorizontalX => _shiftForward.LocalCoordinates.z + _forwardCapsule.LocalCoordinates.z;
+        public float ObjectSpawnDistanceFromPlayerZ => _shiftForward.LocalCoordinates.z + _forwardCapsule.LocalCoordinates.z;
 
-        public float HorizontalY => _shiftForward.LocalCoordinates.x + _forwardCapsule.LocalCoordinates.x;
-
-        public float VerticalX => _shiftForward.LocalCoordinates.z + _forwardCapsule.LocalCoordinates.z;
-
-        public float VerticalY => _shiftForward.LocalCoordinates.y + _forwardCapsule.LocalCoordinates.y;
+        public float ObjectSpawnDistanceFromPlayerX => _shiftForward.LocalCoordinates.x + _forwardCapsule.LocalCoordinates.x;
+        
+        public float ObjectSpawnDistanceFromPlayerY => _shiftForward.LocalCoordinates.y + _forwardCapsule.LocalCoordinates.y;
         
         //Functions
         private void Start()

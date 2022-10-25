@@ -1,6 +1,5 @@
 using Collectors;
 using DataClasses;
-using DataExtractors;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour

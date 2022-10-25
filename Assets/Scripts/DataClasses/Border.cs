@@ -29,8 +29,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[0] = value;
-                double x = _coordinateData.HorizontalX * Math.Cos(value) - _coordinateData.HorizontalY * Math.Sin(value);
-                double z = _coordinateData.HorizontalY * Math.Cos(value) + _coordinateData.HorizontalX * Math.Sin(value);
+                double x = _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _coordinateData.ObjectSpawnDistanceFromPlayerX * Math.Sin(value);
+                double z = _coordinateData.ObjectSpawnDistanceFromPlayerX * Math.Cos(value) + _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
                 LeftBorder = new Vector3((float)x, 0, (float)z);
             }
         }
@@ -41,8 +41,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[1] = value;
-                double x = _coordinateData.HorizontalX * Math.Cos(value) - _coordinateData.HorizontalY * Math.Sin(value);
-                double z = _coordinateData.HorizontalY * Math.Cos(value) + _coordinateData.HorizontalX * Math.Sin(value);
+                double x = _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _coordinateData.ObjectSpawnDistanceFromPlayerX * Math.Sin(value);
+                double z = _coordinateData.ObjectSpawnDistanceFromPlayerX * Math.Cos(value) + _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
                 RightBorder = new Vector3((float)x, 0, (float)z);
             }
         }
@@ -53,8 +53,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[2] = value;
-                double x = _coordinateData.VerticalX * Math.Cos(value) - _coordinateData.VerticalY * Math.Sin(value);
-                double z = _coordinateData.VerticalY * Math.Cos(value) + _coordinateData.VerticalX * Math.Sin(value);
+                double x = _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _coordinateData.ObjectSpawnDistanceFromPlayerY * Math.Sin(value);
+                double z = _coordinateData.ObjectSpawnDistanceFromPlayerY * Math.Cos(value) + _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
                 UpperBorder = new Vector3((float)x, 0, (float)z);
             }
         }
@@ -65,8 +65,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[3] = value;
-                double x = _coordinateData.VerticalX * Math.Cos(value) - _coordinateData.VerticalY * Math.Sin(value);
-                double z = _coordinateData.VerticalY * Math.Cos(value) + _coordinateData.VerticalX * Math.Sin(value);
+                double x = _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _coordinateData.ObjectSpawnDistanceFromPlayerY * Math.Sin(value);
+                double z = _coordinateData.ObjectSpawnDistanceFromPlayerY * Math.Cos(value) + _coordinateData.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
                 LowerBorder = new Vector3((float)x, 0, (float)z);
             }
         }
