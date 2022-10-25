@@ -1,5 +1,5 @@
 ﻿using System;
-using DataExtractors;
+using Collectors;
 using UnityEngine;
 
 namespace DataClasses
