@@ -7,12 +7,12 @@ namespace DataClasses
     public class Border
     {
         private readonly float[] _borderRotationDegrees;
-        private DogData _dog;
+        private readonly CoordinateDataCollector _coordinateData;
 
         public Border()
         {
-            _borderRotationDegrees = new float[4] { 0, 0, 0, 0 };
-            _dog = DogData.Instance;
+            _borderRotationDegrees = new float[] { 0, 0, 0, 0 };
+            _coordinateData = CoordinateDataCollector.Instance;
         }
 
         public Vector3 LeftBorder { get; private set; }
@@ -29,8 +29,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[0] = value;
-                double x = _dog.HorizontalX * Math.Cos(value) - _dog.HorizontalY * Math.Sin(value);
-                double z = _dog.HorizontalY * Math.Cos(value) + _dog.HorizontalX * Math.Sin(value);
+                double x = _coordinateData.HorizontalX * Math.Cos(value) - _coordinateData.HorizontalY * Math.Sin(value);
+                double z = _coordinateData.HorizontalY * Math.Cos(value) + _coordinateData.HorizontalX * Math.Sin(value);
                 LeftBorder = new Vector3((float)x, 0, (float)z);
             }
         }
@@ -41,8 +41,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[1] = value;
-                double x = _dog.HorizontalX * Math.Cos(value) - _dog.HorizontalY * Math.Sin(value);
-                double z = _dog.HorizontalY * Math.Cos(value) + _dog.HorizontalX * Math.Sin(value);
+                double x = _coordinateData.HorizontalX * Math.Cos(value) - _coordinateData.HorizontalY * Math.Sin(value);
+                double z = _coordinateData.HorizontalY * Math.Cos(value) + _coordinateData.HorizontalX * Math.Sin(value);
                 RightBorder = new Vector3((float)x, 0, (float)z);
             }
         }
@@ -53,8 +53,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[2] = value;
-                double x = _dog.VerticalX * Math.Cos(value) - _dog.VerticalY * Math.Sin(value);
-                double z = _dog.VerticalY * Math.Cos(value) + _dog.VerticalX * Math.Sin(value);
+                double x = _coordinateData.VerticalX * Math.Cos(value) - _coordinateData.VerticalY * Math.Sin(value);
+                double z = _coordinateData.VerticalY * Math.Cos(value) + _coordinateData.VerticalX * Math.Sin(value);
                 UpperBorder = new Vector3((float)x, 0, (float)z);
             }
         }
@@ -65,8 +65,8 @@ namespace DataClasses
             set
             {
                 _borderRotationDegrees[3] = value;
-                double x = _dog.VerticalX * Math.Cos(value) - _dog.VerticalY * Math.Sin(value);
-                double z = _dog.VerticalY * Math.Cos(value) + _dog.VerticalX * Math.Sin(value);
+                double x = _coordinateData.VerticalX * Math.Cos(value) - _coordinateData.VerticalY * Math.Sin(value);
+                double z = _coordinateData.VerticalY * Math.Cos(value) + _coordinateData.VerticalX * Math.Sin(value);
                 LowerBorder = new Vector3((float)x, 0, (float)z);
             }
         }

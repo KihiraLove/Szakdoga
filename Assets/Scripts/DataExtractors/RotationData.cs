@@ -5,7 +5,7 @@ namespace DataExtractors
     public class RotationData : MonoBehaviour
     {
         private GameManager _manager;
-    
+        
         // Start is called before the first frame update
         void Start()
         {

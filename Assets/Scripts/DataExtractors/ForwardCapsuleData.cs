@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace DataExtractors
@@ -22,16 +21,8 @@ namespace DataExtractors
             _instance = this;
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
+        public Vector3 LocalCoordinates => gameObject.transform.localPosition;
         
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public Vector3 WorldCoordinates => gameObject.transform.position;
     }
 }

@@ -1,3 +1,4 @@
+using Collectors;
 using DataClasses;
 using DataExtractors;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public Border Border;
     public CurrentRotation CurrentRotation;
-    public DogData dog;
+    public CoordinateDataCollector coordinateData;
 
     private static GameManager _instance;
 
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
     {
         Border = new Border();
         CurrentRotation = new CurrentRotation();
-        dog = DogData.Instance;
+        coordinateData = CoordinateDataCollector.Instance;
     }
 
     // Update is called once per frame
