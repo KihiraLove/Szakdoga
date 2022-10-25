@@ -7,12 +7,12 @@ namespace DataClasses
     public class Border
     {
         private readonly float[] _borderRotationDegrees;
-        private DogDataExtractor _dog;
+        private DogData _dog;
 
         public Border()
         {
             _borderRotationDegrees = new float[4] { 0, 0, 0, 0 };
-            _dog = DogDataExtractor.Instance;
+            _dog = DogData.Instance;
         }
 
         public Vector3 LeftBorder { get; private set; }

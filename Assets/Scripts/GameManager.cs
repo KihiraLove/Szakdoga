@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public Border Border;
     public CurrentRotation CurrentRotation;
-    public DogDataExtractor dog;
+    public DogData dog;
 
     private static GameManager _instance;
 
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     {
         Border = new Border();
         CurrentRotation = new CurrentRotation();
-        dog = DogDataExtractor.Instance;
+        dog = DogData.Instance;
     }
 
     // Update is called once per frame

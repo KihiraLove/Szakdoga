@@ -1,12 +1,13 @@
+using System;
 using UnityEngine;
 
 namespace DataExtractors
 {
-    public class DogDataExtractor : MonoBehaviour
+    public class DogData : MonoBehaviour
     {
-        private static DogDataExtractor _instance;
-
-        public static DogDataExtractor Instance
+        //Singleton implementation
+        private static DogData _instance;
+        public static DogData Instance
         {
             get
             {
@@ -15,12 +16,19 @@ namespace DataExtractors
                 return _instance;
             }
         }
-
         private void Awake()
         {
             _instance = this;
         }
 
+        //Variables
+        private ForwardCapsuleData _forwardCapsule;
+
+        private ShiftForwardData _shiftForward;
+
+        private ShiftUpData _shiftUp;
+        
+        //Properties
         public Vector3 LocalCoordinates => gameObject.transform.localPosition;
 
         public Vector3 WorldCoordinates => gameObject.transform.position;
@@ -33,5 +41,13 @@ namespace DataExtractors
         public float VerticalX => 50.0f;
 
         public float VerticalY => 0.0f;
+        
+        //Functions
+        private void Start()
+        {
+            _forwardCapsule = ForwardCapsuleData.Instance;
+            _shiftForward = ShiftForwardData.Instance;
+            _shiftUp = ShiftUpData.Instance;
+        }
     }
 }

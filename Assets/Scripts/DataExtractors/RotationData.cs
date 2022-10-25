@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DataExtractors
 {
-    public class RotationExtractor : MonoBehaviour
+    public class RotationData : MonoBehaviour
     {
         private GameManager _manager;
     
