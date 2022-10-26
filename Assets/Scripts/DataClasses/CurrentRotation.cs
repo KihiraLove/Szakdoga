@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace DataClasses
+﻿namespace DataClasses
 {
     public class CurrentRotation
     {
@@ -8,7 +6,7 @@ namespace DataClasses
 
         public CurrentRotation()
         {                               //y, x
-            _rotationsInDegree = new float[2] { 0, 0 };
+            _rotationsInDegree = new float[] { 0, 0 };
         }
 
         public float Y
