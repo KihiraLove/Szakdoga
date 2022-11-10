@@ -5,6 +5,7 @@ namespace DataExtractors
     public class DogData : MonoBehaviour
     {
         private static DogData _instance;
+        
         public static DogData Instance
         {
             get
@@ -14,6 +15,7 @@ namespace DataExtractors
                 return _instance;
             }
         }
+        
         private void Awake()
         {
             _instance = this;

@@ -17,7 +17,7 @@ namespace Managers
             get
             {
                 if (_instance == null)
-                    Debug.LogError("Game Manager is Null!");
+                    Debug.LogError("Game Manager got sucked into the void!");
                 return _instance;
             }
         }
