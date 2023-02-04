@@ -1,3 +1,4 @@
+using Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,9 +6,10 @@ namespace Managers
 {
     public class UIManager : MonoBehaviour
     {
-        private GameManager _manager;
+        private PlayerCamRotation _playerCamRotation;
 
         public bool enableDebugText;
+        
         /*
          * 0: none
          * 1: left
@@ -40,7 +42,6 @@ namespace Managers
         // Start is called before the first frame update
         void Start()
         {
-            _manager = GameManager.Instance;
             ClearBorderText();
         }
 
@@ -70,8 +71,8 @@ namespace Managers
 
         private string ConstructDebugString()
         {
-            return "Y rotation: " + _manager.CurrentRotation.Y + System.Environment.NewLine
-                   + "X rotation: " + _manager.CurrentRotation.X;
+            return "Y rotation: " + _playerCamRotation.Y + System.Environment.NewLine
+                   + "X rotation: " + _playerCamRotation.X;
         }
 
         public void SetBorderTextLeft()

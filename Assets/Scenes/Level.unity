@@ -139,9 +139,8 @@ GameObject:
   - component: {fileID: 15634195}
   - component: {fileID: 15634194}
   - component: {fileID: 15634196}
-  - component: {fileID: 15634197}
   m_Layer: 0
-  m_Name: D.O.G.
+  m_Name: PlayerCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableDebugText: 1
+  borderFlag: 0
   debugText: {fileID: 188742437}
   borderHelper: {fileID: 1372239118}
 --- !u!114 &15634195
@@ -253,7 +253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b399b348abb7f4c46b7895af46eb86d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinateData: {fileID: 0}
 --- !u!114 &15634196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,18 +265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e7a84fd3e9b5c4ea72a9d998cdc154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &15634197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15634189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18512f722fa8e274ead8c4caf4d0efea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  forwardCapsule: {fileID: 827964370}
+  shiftForward: {fileID: 1667402957}
+  shiftUp: {fileID: 1139109893}
 --- !u!1 &188742435
 GameObject:
   m_ObjectHideFlags: 0

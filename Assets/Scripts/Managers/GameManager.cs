@@ -1,14 +1,13 @@
-using Collectors;
-using DataClasses;
+using Data;
 using UnityEngine;
 
 namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        public Border Border;
-        public CurrentRotation CurrentRotation;
-        public CoordinateDataCollector coordinateData;
+        private ObjectCoordinates _objectCoordinates;
+        private PlayerCamRotation _playerCamRotation;
+        private Border _border;
 
         private static GameManager _instance;
 
@@ -30,9 +29,14 @@ namespace Managers
         // Start is called before the first frame update
         void Start()
         {
-            Border = new Border();
-            CurrentRotation = new CurrentRotation();
-            coordinateData = CoordinateDataCollector.Instance;
+            _objectCoordinates = ObjectCoordinates.Instance;
+            _playerCamRotation = PlayerCamRotation.Instance;
+            _border = Border.Instance;
+        }
+
+        private void Update()
+        {
+            _playerCamRotation.UpdateRotation();
         }
     }
 }
