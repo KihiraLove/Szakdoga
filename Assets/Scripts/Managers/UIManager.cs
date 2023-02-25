@@ -43,6 +43,7 @@ namespace Managers
         void Start()
         {
             ClearBorderText();
+            _playerCamRotation = PlayerCamRotation.Instance;
         }
 
         // Update is called once per frame

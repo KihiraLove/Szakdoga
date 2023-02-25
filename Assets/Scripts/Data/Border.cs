@@ -1,4 +1,5 @@
 using System;
+using Enums;
 using Managers;
 using UnityEngine;
 
@@ -6,8 +7,6 @@ namespace Data
 {
     public class Border : MonoBehaviour
     {
-        private float _lastRotation;
-        private int _popCounter;
         private bool _leftBorderSet;
         private bool _rightBorderSet;
         private bool _upperBorderSet;
@@ -24,7 +23,7 @@ namespace Data
             get
             {
                 if (_instance == null)
-                    Debug.LogError("Game Manager got sucked into the void!");
+                    Debug.LogError("Singleton for border calculations error");
                 return _instance;
             }
         }
@@ -41,8 +40,6 @@ namespace Data
             _objectCoordinates = ObjectCoordinates.Instance;
             _gameManager = GameManager.Instance;
             _uiManager = UIManager.Instance;
-            _popCounter = 60;
-            _lastRotation = gameObject.transform.rotation.eulerAngles.y;
             _leftBorderSet = false;
             _rightBorderSet = false;
             _upperBorderSet = false;
@@ -52,28 +49,56 @@ namespace Data
         // Update is called once per frame
         void Update()
         {
-            if (!(_leftBorderSet && _rightBorderSet && _lowerBorderSet && _upperBorderSet))
+            SetBorders();
+        }
+
+        private void SetBorders()
+        {
+            if (_gameManager.State != GameState.BorderCalculation)
+                return;
+            if (!_leftBorderSet)
             {
-                if (!_leftBorderSet)
-                {
-                    if (_uiManager.borderFlag == 0)
-                    {
-                        _uiManager.SetBorderTextLeft();
-                        _uiManager.borderFlag++;
-                    }
-                } else if(!_rightBorderSet)
-                {
-                    _uiManager.SetBorderTextRight();
-                } else if (!_upperBorderSet)
-                {
-                    _uiManager.SetBorderTextUp();
-                }else if (!_lowerBorderSet)
-                {
-                    _uiManager.SetBorderTextDown();
-                }
+                SetLeftBorder();
+                return;
             }
+            if (!_rightBorderSet)
+            {
+                SetRightBorder();
+                return;
+            }
+            if (!_upperBorderSet)
+            {
+                SetUpperBorder();
+                return;
+            }
+            if (!_lowerBorderSet)
+            {
+                SetLowerBorder();
+                return;
+            }
+            _gameManager.State = GameState.InGame;
+        }
+
+        private void SetLeftBorder()
+        {
+            _uiManager.SetBorderTextLeft();
+        }
+
+        private void SetRightBorder()
+        {
+            _uiManager.SetBorderTextRight();
         }
         
+        private void SetUpperBorder()
+        {
+            _uiManager.SetBorderTextUp();
+        }
+        
+        private void SetLowerBorder()
+        {
+            _uiManager.SetBorderTextDown();
+        }
+
         public Vector3 LeftBorder { get; private set; }
 
         public Vector3 RightBorder { get; private set; }
