@@ -1,3 +1,4 @@
+using System;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ namespace Managers
     public class UIManager : MonoBehaviour
     {
         private PlayerCamRotation _playerCamRotation;
+        private GameManager _gameManager;
+        private Border _border;
 
         public bool enableDebugText;
         
@@ -29,7 +32,7 @@ namespace Managers
             get
             {
                 if(_instance == null)
-                    Debug.LogError("UI Manager died for some reason!");
+                    Debug.LogError("UI Manager not instantiated!");
                 return _instance;
             }
         }
@@ -44,6 +47,8 @@ namespace Managers
         {
             ClearBorderText();
             _playerCamRotation = PlayerCamRotation.Instance;
+            _gameManager = GameManager.Instance;
+            _border = Border.Instance;
         }
 
         // Update is called once per frame
@@ -72,8 +77,11 @@ namespace Managers
 
         private string ConstructDebugString()
         {
-            return "Y rotation: " + _playerCamRotation.Y + System.Environment.NewLine
-                   + "X rotation: " + _playerCamRotation.X;
+            String res = "Y rotation: " + _playerCamRotation.Y + System.Environment.NewLine
+                         + "X rotation: " + _playerCamRotation.X + System.Environment.NewLine
+                         + _border.ConstructDebugString();
+            
+            return res;
         }
 
         public void SetBorderTextLeft()

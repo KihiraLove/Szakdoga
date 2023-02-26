@@ -15,6 +15,12 @@ namespace Data
         private UIManager _uiManager;
         private float[] _borderRotationDegrees;
         private ObjectCoordinates _objectCoordinates;
+        private PlayerCamRotation _playerCamRotation;
+
+        private int _pop;
+        private double _lastDegree = -9999.0;
+
+        public int pop;
 
         private static Border _instance;
 
@@ -23,7 +29,7 @@ namespace Data
             get
             {
                 if (_instance == null)
-                    Debug.LogError("Singleton for border calculations error");
+                    Debug.LogError("Border singleton not instantiated!");
                 return _instance;
             }
         }
@@ -40,14 +46,16 @@ namespace Data
             _objectCoordinates = ObjectCoordinates.Instance;
             _gameManager = GameManager.Instance;
             _uiManager = UIManager.Instance;
+            _playerCamRotation = PlayerCamRotation.Instance;
             _leftBorderSet = false;
             _rightBorderSet = false;
             _upperBorderSet = false;
             _lowerBorderSet = false;
+            _pop = pop;
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             SetBorders();
         }
@@ -56,6 +64,9 @@ namespace Data
         {
             if (_gameManager.State != GameState.BorderCalculation)
                 return;
+            if (_lastDegree < -9998.0)
+                _lastDegree = _playerCamRotation.X;
+            
             if (!_leftBorderSet)
             {
                 SetLeftBorder();
@@ -77,26 +88,99 @@ namespace Data
                 return;
             }
             _gameManager.State = GameState.InGame;
+            _uiManager.ClearBorderText();
         }
 
         private void SetLeftBorder()
         {
-            _uiManager.SetBorderTextLeft();
+            if(_uiManager.borderFlag != 1)
+                _uiManager.SetBorderTextLeft();
+            if (_playerCamRotation.X < 0) ;
+            if (Math.Abs(_lastDegree - _playerCamRotation.X) < 2.0 && _pop-- != 0)
+                return;
+            if (_pop > 0)
+            {
+                _pop = pop;
+                _lastDegree = _playerCamRotation.X;
+            }
+            else
+            {
+                LeftDegree = _playerCamRotation.X;
+                _leftBorderSet = true;
+                _pop = pop;
+            }
         }
 
         private void SetRightBorder()
         {
-            _uiManager.SetBorderTextRight();
+            if(_uiManager.borderFlag != 2)
+                _uiManager.SetBorderTextRight();
+            if (Math.Abs(_lastDegree - _playerCamRotation.X) < 2.0 && _pop-- != 0)
+                return;
+            if (_pop > 0)
+            {
+                _pop = pop;
+                _lastDegree = _playerCamRotation.X;
+            }
+            else
+            {
+                RightDegree = _playerCamRotation.X;
+                _rightBorderSet = true;
+                _lastDegree = _playerCamRotation.Y;
+                _pop = pop;
+            }
         }
         
         private void SetUpperBorder()
         {
-            _uiManager.SetBorderTextUp();
+            if(_uiManager.borderFlag != 3)
+                _uiManager.SetBorderTextUp();
+            if (Math.Abs(_lastDegree - _playerCamRotation.Y) < 2.0 && _pop-- != 0)
+                return;
+            if (_pop > 0)
+            {
+                _pop = pop;
+                _lastDegree = _playerCamRotation.Y;
+            }
+            else
+            {
+                UpperDegree = _playerCamRotation.Y;
+                _upperBorderSet = true;
+                _pop = pop;
+            }
         }
-        
+
         private void SetLowerBorder()
         {
-            _uiManager.SetBorderTextDown();
+            if(_uiManager.borderFlag != 4)
+                _uiManager.SetBorderTextDown();
+            if (Math.Abs(_lastDegree - _playerCamRotation.Y) < 2.0 && _pop-- != 0)
+                return;
+            if (_pop > 0)
+            {
+                _pop = pop;
+                _lastDegree = _playerCamRotation.Y;
+            }
+            else
+            {
+                LowerDegree = _playerCamRotation.Y;
+                _lowerBorderSet = true;
+                _pop = pop;
+            }
+        }
+        
+        public String ConstructDebugString()
+        {
+            String res = "Pop: " + _pop + System.Environment.NewLine;
+            if (_leftBorderSet)
+                res = res + "Left Border Set" + System.Environment.NewLine;
+            if (_rightBorderSet)
+                res = res + "Right Border Set" + System.Environment.NewLine;
+            if (_upperBorderSet)
+                res = res + "Upper Border Set" + System.Environment.NewLine;
+            if (_lowerBorderSet)
+                res = res + "Lower Border Set";
+            return res;
         }
 
         public Vector3 LeftBorder { get; private set; }
