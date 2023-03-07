@@ -1,3 +1,4 @@
+ using Managers;
  using UnityEngine;
 
 namespace Controllers
@@ -20,6 +21,11 @@ namespace Controllers
         // Update is called once per frame
         void Update()
         {
+            RotateCam();
+        }
+
+        private void RotateCam()
+        {
             float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
             float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;
 
@@ -28,5 +34,7 @@ namespace Controllers
         
             transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
         }
+
+
     }
 }

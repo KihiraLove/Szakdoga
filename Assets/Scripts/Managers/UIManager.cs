@@ -23,6 +23,7 @@ namespace Managers
         public int borderFlag;
         
         public Text debugText;
+        public Text raycastDebugText;
         public Text borderHelper;
 
         private bool _enableBorderHelper;
@@ -49,6 +50,7 @@ namespace Managers
             _playerCamRotation = PlayerCamRotation.Instance;
             _gameManager = GameManager.Instance;
             _border = Border.Instance;
+            raycastDebugText.text = "";
         }
 
         // Update is called once per frame
@@ -57,6 +59,12 @@ namespace Managers
             UpdateTexts();
         }
 
+        public String RaycastDebugText
+        {
+            get => raycastDebugText.text;
+            set => raycastDebugText.text = value;
+        }
+        
         private void UpdateTexts()
         {
             if (enableDebugText)
