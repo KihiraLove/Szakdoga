@@ -36,9 +36,13 @@ namespace Data
                     {
                         case "DebugClickBox":
                             _game.SwitchDebugMode();
-                            break;
-                        default:
-                            break;
+                            return;
+                        case "StartClickBox":
+
+                            return;
+                        case "ExitClickBox":
+                            
+                            return;
                     }
                 }
             }
