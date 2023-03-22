@@ -23,6 +23,7 @@ namespace Managers
         public int borderFlag;
         
         public Text debugText;
+        public Text debugText2;
         public Text raycastDebugText;
         public Text borderHelper;
 
@@ -120,6 +121,11 @@ namespace Managers
         {
             borderHelper.text = "";
             borderFlag = 0;
+        }
+
+        public void SetDebugText2(String text)
+        {
+            debugText2.text = text;
         }
     }
 }

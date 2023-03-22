@@ -10,6 +10,7 @@ namespace Managers
         private PlayerCamRotation _playerCamRotation;
         private Border _border;
         private GameState _state;
+        private UIManager _ui;
 
         private bool _debugMode;
         
@@ -46,6 +47,7 @@ namespace Managers
             _playerCamRotation = PlayerCamRotation.Instance;
             _border = Border.Instance;
             _state = GameState.Menu;
+            _ui = UIManager.Instance;
             
             _menu = Instantiate(menuPrefab, menuShift.transform.position, Quaternion.identity);
         }
@@ -53,6 +55,14 @@ namespace Managers
         private void Update()
         {
             _playerCamRotation.UpdateRotation();
+            if (State == GameState.Menu && !_menu)
+            {
+                _menu = Instantiate(menuPrefab, menuShift.transform.position, Quaternion.identity);
+            }
+            else if (State != GameState.Menu && _menu)
+            {
+                Destroy(_menu);
+            }
         }
 
         public GameState State

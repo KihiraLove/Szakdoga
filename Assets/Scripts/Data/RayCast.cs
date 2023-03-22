@@ -1,4 +1,5 @@
 ﻿using System;
+using Enums;
 using Managers;
 using UnityEngine;
 
@@ -38,10 +39,16 @@ namespace Data
                             _game.SwitchDebugMode();
                             return;
                         case "StartClickBox":
-
+                            _game.State = GameState.InGame;
+                            return;
+                        case "EditClickBox":
+                            _game.State = GameState.EditMode;
+                            return;
+                        case "Sphere":
+                            
                             return;
                         case "ExitClickBox":
-                            
+                            Application.Quit();
                             return;
                     }
                 }
