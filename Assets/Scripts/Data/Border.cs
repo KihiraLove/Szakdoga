@@ -7,19 +7,15 @@ namespace Data
 {
     public class Border : MonoBehaviour
     {
-        private bool _leftBorderSet;
-        private bool _rightBorderSet;
-        private bool _upperBorderSet;
-        private bool _lowerBorderSet;
         private GameManager _gameManager;
         private UIManager _uiManager;
         private float[] _borderRotationDegrees;
         private ObjectCoordinates _objectCoordinates;
         private PlayerCamRotation _playerCamRotation;
-
+        private BorderFlag _borderFlag;
         private int _pop;
         private double _lastDegree = -9999.0;
-
+        private bool _helperTextCalled;
         public int pop;
 
         private static Border _instance;
@@ -47,11 +43,9 @@ namespace Data
             _gameManager = GameManager.Instance;
             _uiManager = UIManager.Instance;
             _playerCamRotation = PlayerCamRotation.Instance;
-            _leftBorderSet = false;
-            _rightBorderSet = false;
-            _upperBorderSet = false;
-            _lowerBorderSet = false;
+            _borderFlag = BorderFlag.None;
             _pop = pop;
+            _helperTextCalled = false;
         }
 
         // Update is called once per frame
@@ -67,118 +61,135 @@ namespace Data
             if (_lastDegree < -9998.0)
                 _lastDegree = _playerCamRotation.X;
             
-            if (!_leftBorderSet)
+            switch (_borderFlag)
             {
-                SetLeftBorder();
-                return;
+                case BorderFlag.None:
+                    SetLeftBorder();
+                    return;
+                case BorderFlag.Left:
+                    SetRightBorder();
+                    return;
+                case BorderFlag.Right:
+                    SetUpperBorder();
+                    return;
+                case BorderFlag.Up:
+                    SetLowerBorder();
+                    return;
+                case BorderFlag.Down:
+                case BorderFlag.All:
+                default:
+                    _gameManager.State = GameState.InGame;
+                    _uiManager.borderHelper.ClearBorderText();
+                    break;
             }
-            if (!_rightBorderSet)
-            {
-                SetRightBorder();
-                return;
-            }
-            if (!_upperBorderSet)
-            {
-                SetUpperBorder();
-                return;
-            }
-            if (!_lowerBorderSet)
-            {
-                SetLowerBorder();
-                return;
-            }
-            _gameManager.State = GameState.InGame;
-            _uiManager.ClearBorderText();
         }
 
         private void SetLeftBorder()
         {
-            if(_uiManager.borderFlag != 1)
-                _uiManager.SetBorderTextLeft();
-            if (_playerCamRotation.X < 0) ;
-            if (Math.Abs(_lastDegree - _playerCamRotation.X) < 2.0 && _pop-- != 0)
-                return;
-            if (_pop > 0)
+            if (!_helperTextCalled)
             {
-                _pop = pop;
-                _lastDegree = _playerCamRotation.X;
+                _uiManager.borderHelper.SetBorderTextLeft();
+                _helperTextCalled = true;
             }
+            float yRotation = _playerCamRotation.Y;
+            if (yRotation is > 360 or < 180) return;
+            if (Math.Abs(_lastDegree - yRotation) < 2.0) 
+                _pop--;
             else
             {
-                LeftDegree = _playerCamRotation.X;
-                _leftBorderSet = true;
                 _pop = pop;
+                _lastDegree = yRotation;
             }
+
+            if (_pop != 0) return;
+            LeftDegree = yRotation;
+            _borderFlag = BorderFlag.Left;
+            _pop = pop;
+            _helperTextCalled = false;
         }
 
         private void SetRightBorder()
         {
-            if(_uiManager.borderFlag != 2)
-                _uiManager.SetBorderTextRight();
-            if (Math.Abs(_lastDegree - _playerCamRotation.X) < 2.0 && _pop-- != 0)
-                return;
-            if (_pop > 0)
+            if (!_helperTextCalled)
             {
-                _pop = pop;
-                _lastDegree = _playerCamRotation.X;
+                _uiManager.borderHelper.SetBorderTextRight();
+                _helperTextCalled = true;
             }
+            float yRotation = _playerCamRotation.Y;
+            if (yRotation is > 180 or < 0) return;
+            if (Math.Abs(_lastDegree - yRotation) < 2.0) 
+                _pop--;
             else
             {
-                RightDegree = _playerCamRotation.X;
-                _rightBorderSet = true;
-                _lastDegree = _playerCamRotation.Y;
                 _pop = pop;
+                _lastDegree = yRotation;
             }
+
+            if (_pop != 0) return;
+            RightDegree = yRotation;
+            _borderFlag = BorderFlag.Right;
+            _pop = pop;
+            _helperTextCalled = false;
         }
         
         private void SetUpperBorder()
         {
-            if(_uiManager.borderFlag != 3)
-                _uiManager.SetBorderTextUp();
-            if (Math.Abs(_lastDegree - _playerCamRotation.Y) < 2.0 && _pop-- != 0)
-                return;
-            if (_pop > 0)
+            if (!_helperTextCalled)
             {
-                _pop = pop;
-                _lastDegree = _playerCamRotation.Y;
+                _uiManager.borderHelper.SetBorderTextUp();
+                _helperTextCalled = true;
             }
+            float xRotation = _playerCamRotation.X;
+            if (xRotation is > 360 or < 180) return;
+            if (Math.Abs(_lastDegree - xRotation) < 2.0) 
+                _pop--;
             else
             {
-                UpperDegree = _playerCamRotation.Y;
-                _upperBorderSet = true;
                 _pop = pop;
+                _lastDegree = xRotation;
             }
+
+            if (_pop != 0) return;
+            RightDegree = xRotation;
+            _borderFlag = BorderFlag.Up;
+            _pop = pop;
+            _helperTextCalled = false;
         }
 
         private void SetLowerBorder()
         {
-            if(_uiManager.borderFlag != 4)
-                _uiManager.SetBorderTextDown();
-            if (Math.Abs(_lastDegree - _playerCamRotation.Y) < 2.0 && _pop-- != 0)
-                return;
-            if (_pop > 0)
+            if (!_helperTextCalled)
             {
-                _pop = pop;
-                _lastDegree = _playerCamRotation.Y;
+                _uiManager.borderHelper.SetBorderTextDown();
+                _helperTextCalled = true;
             }
+            float xRotation = _playerCamRotation.X;
+            if (xRotation is > 180 or < 0) return;
+            if (Math.Abs(_lastDegree - xRotation) < 2.0) 
+                _pop--;
             else
             {
-                LowerDegree = _playerCamRotation.Y;
-                _lowerBorderSet = true;
                 _pop = pop;
+                _lastDegree = xRotation;
             }
+
+            if (_pop != 0) return;
+            RightDegree = xRotation;
+            _borderFlag = BorderFlag.Down;
+            _pop = pop;
+            _helperTextCalled = false;
         }
         
-        public String ConstructDebugString()
+        public string ConstructDebugString()
         {
-            String res = "Pop: " + _pop + System.Environment.NewLine;
-            if (_leftBorderSet)
+            string res = "Pop: " + _pop + System.Environment.NewLine;
+            if (_borderFlag >= BorderFlag.Left)
                 res = res + "Left Border Set" + System.Environment.NewLine;
-            if (_rightBorderSet)
+            if (_borderFlag >= BorderFlag.Right)
                 res = res + "Right Border Set" + System.Environment.NewLine;
-            if (_upperBorderSet)
+            if (_borderFlag >= BorderFlag.Up)
                 res = res + "Upper Border Set" + System.Environment.NewLine;
-            if (_lowerBorderSet)
+            if (_borderFlag >= BorderFlag.Down)
                 res = res + "Lower Border Set";
             return res;
         }

@@ -239,12 +239,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 697b2bc301bddfc47b9b97d84baa1d94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableDebugText: 1
-  borderFlag: 0
   debugText: {fileID: 188742437}
   debugText2: {fileID: 2104264854}
   raycastDebugText: {fileID: 106108446}
-  borderHelper: {fileID: 1372239118}
+  borderHelperText: {fileID: 1372239118}
 --- !u!114 &15634195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e7a84fd3e9b5c4ea72a9d998cdc154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardCapsule: {fileID: 0}
+  forwardCapsule: {fileID: 977924175}
   shiftForward: {fileID: 1667402957}
   shiftUp: {fileID: 1139109893}
 --- !u!114 &15634197

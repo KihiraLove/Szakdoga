@@ -12,8 +12,6 @@ namespace Managers
         private GameState _state;
         private UIManager _ui;
 
-        private bool _debugMode;
-        
         public GameObject shiftForward;
         public GameObject menuShift;
         
@@ -21,7 +19,7 @@ namespace Managers
         public GameObject menuPrefab;
 
         private GameObject _menu;
-        private GameObject _debug;
+        private GameObject _debugCapsules;
 
         private static GameManager _instance;
 
@@ -50,6 +48,7 @@ namespace Managers
             _ui = UIManager.Instance;
             
             _menu = Instantiate(menuPrefab, menuShift.transform.position, Quaternion.identity);
+            SwitchDebugMode();
         }
 
         private void Update()
@@ -73,15 +72,15 @@ namespace Managers
 
         public void SwitchDebugMode()
         {
-            if (_debugMode)
+            if (_ui.debug.Enabled)
             {
-                Destroy(_debug);
+                Destroy(_debugCapsules);
             }
             else
             {
-                _debug = Instantiate(debugPrefab, shiftForward.transform.position, Quaternion.identity);
+                _debugCapsules = Instantiate(debugPrefab, shiftForward.transform.position, Quaternion.identity);
             }
-            _debugMode = !_debugMode;
+            _ui.debug.SwitchDebugMode();
         }
     }
 }
