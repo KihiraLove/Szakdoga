@@ -20,23 +20,12 @@ namespace Data
             _instance = this;
         }
         
-        public GameObject forwardCapsule;
+        public GameObject menuShift;
 
         public GameObject shiftForward;
 
         public GameObject shiftUp;
-
-        //Properties
-        public float ObjectSpawnDistanceFromPlayerZ => shiftForward.transform.localPosition.z + forwardCapsule.transform.localPosition.z;
-
-        public float ObjectSpawnDistanceFromPlayerX => shiftForward.transform.localPosition.x + forwardCapsule.transform.localPosition.x;
         
-        public float ObjectSpawnDistanceFromPlayerY => shiftForward.transform.localPosition.y + forwardCapsule.transform.localPosition.y;
-        
-        //Functions
-        private void Start()
-        {
-
-        }
+        public float SpawnDistanceFromPlayer => shiftForward.transform.localPosition.z + menuShift.transform.localPosition.z;
     }
 }

@@ -14,8 +14,13 @@ namespace Data
         private PlayerCamRotation _playerCamRotation;
         private BorderFlag _borderFlag;
         private int _pop;
-        private double _lastDegree = -9999.0;
+        private float _lastDegree;
         private bool _helperTextCalled;
+
+        private Vector3 _rightBorder;
+        private Vector3 _upperBorder;
+        private Vector3 _lowerBorder;
+        
         public int pop;
 
         private static Border _instance;
@@ -46,6 +51,7 @@ namespace Data
             _borderFlag = BorderFlag.None;
             _pop = pop;
             _helperTextCalled = false;
+            _lastDegree = _playerCamRotation.EulerAngles.x;
         }
 
         // Update is called once per frame
@@ -58,9 +64,6 @@ namespace Data
         {
             if (_gameManager.State != GameState.BorderCalculation)
                 return;
-            if (_lastDegree < -9998.0)
-                _lastDegree = _playerCamRotation.X;
-            
             switch (_borderFlag)
             {
                 case BorderFlag.None:
@@ -91,14 +94,15 @@ namespace Data
                 _uiManager.borderHelper.SetBorderTextLeft();
                 _helperTextCalled = true;
             }
-            float yRotation = _playerCamRotation.Y;
+            float yRotation = _playerCamRotation.EulerAngles.y;
             if (yRotation is > 360 or < 180) return;
-            if (Math.Abs(_lastDegree - yRotation) < 2.0) 
+            if (Math.Abs(_lastDegree - yRotation) < 2.0)
                 _pop--;
             else
             {
                 _pop = pop;
                 _lastDegree = yRotation;
+                return;
             }
 
             if (_pop != 0) return;
@@ -106,6 +110,7 @@ namespace Data
             _borderFlag = BorderFlag.Left;
             _pop = pop;
             _helperTextCalled = false;
+            _uiManager.debug.SpawnDebugObject(LeftBorder);
         }
 
         private void SetRightBorder()
@@ -115,7 +120,7 @@ namespace Data
                 _uiManager.borderHelper.SetBorderTextRight();
                 _helperTextCalled = true;
             }
-            float yRotation = _playerCamRotation.Y;
+            float yRotation = _playerCamRotation.EulerAngles.y;
             if (yRotation is > 180 or < 0) return;
             if (Math.Abs(_lastDegree - yRotation) < 2.0) 
                 _pop--;
@@ -130,6 +135,7 @@ namespace Data
             _borderFlag = BorderFlag.Right;
             _pop = pop;
             _helperTextCalled = false;
+            _uiManager.debug.SpawnDebugObject(RightBorder);
         }
         
         private void SetUpperBorder()
@@ -139,7 +145,7 @@ namespace Data
                 _uiManager.borderHelper.SetBorderTextUp();
                 _helperTextCalled = true;
             }
-            float xRotation = _playerCamRotation.X;
+            float xRotation = _playerCamRotation.EulerAngles.x;
             if (xRotation is > 360 or < 180) return;
             if (Math.Abs(_lastDegree - xRotation) < 2.0) 
                 _pop--;
@@ -150,10 +156,11 @@ namespace Data
             }
 
             if (_pop != 0) return;
-            RightDegree = xRotation;
+            UpperDegree = xRotation;
             _borderFlag = BorderFlag.Up;
             _pop = pop;
             _helperTextCalled = false;
+            _uiManager.debug.SpawnDebugObject(UpperBorder);
         }
 
         private void SetLowerBorder()
@@ -163,7 +170,7 @@ namespace Data
                 _uiManager.borderHelper.SetBorderTextDown();
                 _helperTextCalled = true;
             }
-            float xRotation = _playerCamRotation.X;
+            float xRotation = _playerCamRotation.EulerAngles.x;
             if (xRotation is > 180 or < 0) return;
             if (Math.Abs(_lastDegree - xRotation) < 2.0) 
                 _pop--;
@@ -174,10 +181,11 @@ namespace Data
             }
 
             if (_pop != 0) return;
-            RightDegree = xRotation;
+            LowerDegree = xRotation;
             _borderFlag = BorderFlag.Down;
             _pop = pop;
             _helperTextCalled = false;
+            _uiManager.debug.SpawnDebugObject(LowerBorder);
         }
         
         public string ConstructDebugString()
@@ -208,9 +216,7 @@ namespace Data
             set
             {
                 _borderRotationDegrees[0] = value;
-                double x = _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _objectCoordinates.ObjectSpawnDistanceFromPlayerX * Math.Sin(value);
-                double z = _objectCoordinates.ObjectSpawnDistanceFromPlayerX * Math.Cos(value) + _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
-                LeftBorder = new Vector3((float)x, 0, (float)z);
+                LeftBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
             }
         }
         
@@ -220,9 +226,7 @@ namespace Data
             set
             {
                 _borderRotationDegrees[1] = value;
-                double x = _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _objectCoordinates.ObjectSpawnDistanceFromPlayerX * Math.Sin(value);
-                double z = _objectCoordinates.ObjectSpawnDistanceFromPlayerX * Math.Cos(value) + _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
-                RightBorder = new Vector3((float)x, 0, (float)z);
+                RightBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
             }
         }
         
@@ -232,9 +236,7 @@ namespace Data
             set
             {
                 _borderRotationDegrees[2] = value;
-                double x = _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _objectCoordinates.ObjectSpawnDistanceFromPlayerY * Math.Sin(value);
-                double z = _objectCoordinates.ObjectSpawnDistanceFromPlayerY * Math.Cos(value) + _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
-                UpperBorder = new Vector3((float)x, 0, (float)z);
+                UpperBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
             }
         }
         
@@ -244,9 +246,7 @@ namespace Data
             set
             {
                 _borderRotationDegrees[3] = value;
-                double x = _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Cos(value) - _objectCoordinates.ObjectSpawnDistanceFromPlayerY * Math.Sin(value);
-                double z = _objectCoordinates.ObjectSpawnDistanceFromPlayerY * Math.Cos(value) + _objectCoordinates.ObjectSpawnDistanceFromPlayerZ * Math.Sin(value);
-                LowerBorder = new Vector3((float)x, 0, (float)z);
+                LowerBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
             }
         }
     }

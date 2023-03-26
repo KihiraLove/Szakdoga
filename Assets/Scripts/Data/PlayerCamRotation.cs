@@ -4,8 +4,6 @@ namespace Data
 {
     public class PlayerCamRotation : MonoBehaviour
     {
-        private float[] _rotationsInDegree;
-        
         private static PlayerCamRotation _instance;
 
         public static PlayerCamRotation Instance
@@ -22,22 +20,11 @@ namespace Data
         {
             _instance = this;
         }
-        
-        // Start is called before the first frame update
-        void Start()
-        {                                       //y, x
-            _rotationsInDegree = new float[] { 0, 0 };
-        }
-        
-        public void UpdateRotation()
-        {
-            Vector3 currentAngles = gameObject.transform.rotation.eulerAngles;
-            _rotationsInDegree[0] = currentAngles.y;
-            _rotationsInDegree[1] = currentAngles.x;
-        }
 
-        public float Y => _rotationsInDegree[0];
+        public Vector3 ForwardVector => transform.forward;
 
-        public float X => _rotationsInDegree[1];
+        public Vector3 EulerAngles => transform.eulerAngles;
+
+        public Vector3 CameraPosition => transform.position;
     }
 }

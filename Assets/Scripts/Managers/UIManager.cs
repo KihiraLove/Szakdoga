@@ -18,6 +18,7 @@ namespace Managers
         public Text debugText2;
         public Text raycastDebugText;
         public Text borderHelperText;
+        public GameObject debugSpherePrefab;
         
         private static UIManager _instance;
         public static UIManager Instance
@@ -41,7 +42,7 @@ namespace Managers
             _playerCamRotation = PlayerCamRotation.Instance;
             _gameManager = GameManager.Instance;
             _border = Border.Instance;
-            debug = new DebugManager(debugText, debugText2, raycastDebugText);
+            debug = new DebugManager(debugText, debugText2, raycastDebugText, debugSpherePrefab);
             borderHelper = new BorderHelper(borderHelperText);
             borderHelper.ClearBorderText();
         }
@@ -50,9 +51,8 @@ namespace Managers
         void Update()
         {
             debug.LogValues();
-            debug.CamRotationValues(_playerCamRotation.Y, _playerCamRotation.X);
+            debug.CamRotationValues(_playerCamRotation.EulerAngles.y, _playerCamRotation.EulerAngles.x);
+            
         }
-
-
     }
 }

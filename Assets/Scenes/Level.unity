@@ -243,6 +243,8 @@ MonoBehaviour:
   debugText2: {fileID: 2104264854}
   raycastDebugText: {fileID: 106108446}
   borderHelperText: {fileID: 1372239118}
+  debugSpherePrefab: {fileID: 4004501551043024077, guid: 1853fce443e34dd4fbd032aab60b7670,
+    type: 3}
 --- !u!114 &15634195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e7a84fd3e9b5c4ea72a9d998cdc154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardCapsule: {fileID: 977924175}
+  menuShift: {fileID: 977924175}
   shiftForward: {fileID: 1667402957}
   shiftUp: {fileID: 1139109893}
 --- !u!114 &15634197
@@ -1137,7 +1139,7 @@ GameObject:
   - component: {fileID: 1752339408}
   m_Layer: 0
   m_Name: PlayerCam
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

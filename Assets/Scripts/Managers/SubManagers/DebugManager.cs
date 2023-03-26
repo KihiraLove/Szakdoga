@@ -1,8 +1,9 @@
 ﻿using Data;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Managers
+namespace Managers.SubManagers
 {
     public class DebugManager
     {
@@ -11,16 +12,19 @@ namespace Managers
         private readonly Text _raycastDebugText;
         private int _buffer;
         private bool _enableDebug;
+        private GameObject _debugSpherePrefab;
+        private GameObject[] _debugObjects;
 
         public bool Enabled => _enableDebug;
 
         private readonly Border _border;
 
-        public DebugManager(Text debugText, Text debugText2, Text raycastDebugText)
+        public DebugManager(Text debugText, Text debugText2, Text raycastDebugText, GameObject debugSpherePrefab)
         {
             _debugText = debugText;
             _debugText2 = debugText2;
             _raycastDebugText = raycastDebugText;
+            _debugSpherePrefab = debugSpherePrefab;
             _buffer = 60;
             _enableDebug = false;
             _debugText.enabled = false;
@@ -72,6 +76,11 @@ namespace Managers
             DebugText = "Y rotation: " + y + System.Environment.NewLine
                          + "X rotation: " + x + System.Environment.NewLine
                          + _border.ConstructDebugString();
+        }
+
+        public void SpawnDebugObject(Vector3 position)
+        {
+            GameManager.SpawnObject(_debugSpherePrefab, position);
         }
     }
 }

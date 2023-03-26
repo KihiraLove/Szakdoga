@@ -9,7 +9,6 @@ namespace Managers
         private ObjectCoordinates _objectCoordinates;
         private PlayerCamRotation _playerCamRotation;
         private Border _border;
-        private GameState _state;
         private UIManager _ui;
 
         public GameObject shiftForward;
@@ -37,14 +36,13 @@ namespace Managers
         {
             _instance = this;
         }
-
-        // Start is called before the first frame update
+        
         void Start()
         {
             _objectCoordinates = ObjectCoordinates.Instance;
             _playerCamRotation = PlayerCamRotation.Instance;
             _border = Border.Instance;
-            _state = GameState.Menu;
+            State = GameState.Menu;
             _ui = UIManager.Instance;
             
             _menu = Instantiate(menuPrefab, menuShift.transform.position, Quaternion.identity);
@@ -53,7 +51,6 @@ namespace Managers
 
         private void Update()
         {
-            _playerCamRotation.UpdateRotation();
             if (State == GameState.Menu && !_menu)
             {
                 _menu = Instantiate(menuPrefab, menuShift.transform.position, Quaternion.identity);
@@ -64,23 +61,29 @@ namespace Managers
             }
         }
 
-        public GameState State
-        {
-            get => _state;
-            set => _state = value;
-        }
+        public GameState State { get; set; }
 
         public void SwitchDebugMode()
         {
             if (_ui.debug.Enabled)
             {
-                Destroy(_debugCapsules);
+                DestroyObject(_debugCapsules);
             }
             else
             {
-                _debugCapsules = Instantiate(debugPrefab, shiftForward.transform.position, Quaternion.identity);
+                _debugCapsules = SpawnObject(debugPrefab, shiftForward.transform.position);
             }
             _ui.debug.SwitchDebugMode();
+        }
+
+        public static GameObject SpawnObject(GameObject original, Vector3 position)
+        {
+            return Instantiate(original, position, Quaternion.identity);
+        }
+
+        public static void DestroyObject(GameObject obj)
+        {
+            Destroy(obj);
         }
     }
 }
