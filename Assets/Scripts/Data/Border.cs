@@ -7,8 +7,8 @@ namespace Data
 {
     public class Border : MonoBehaviour
     {
-        private GameManager _gameManager;
-        private UIManager _uiManager;
+        private GameManager _game;
+        private UIManager _ui;
         private float[] _borderRotationDegrees;
         private ObjectCoordinates _objectCoordinates;
         private PlayerCamRotation _playerCamRotation;
@@ -45,8 +45,8 @@ namespace Data
         {
             _borderRotationDegrees = new float[] { 0, 0, 0, 0 };
             _objectCoordinates = ObjectCoordinates.Instance;
-            _gameManager = GameManager.Instance;
-            _uiManager = UIManager.Instance;
+            _game = GameManager.Instance;
+            _ui = UIManager.Instance;
             _playerCamRotation = PlayerCamRotation.Instance;
             _borderFlag = BorderFlag.None;
             _pop = pop;
@@ -62,7 +62,7 @@ namespace Data
 
         private void SetBorders()
         {
-            if (_gameManager.State != GameState.BorderCalculation)
+            if (_game.State != GameState.BorderCalculation)
                 return;
             switch (_borderFlag)
             {
@@ -81,8 +81,8 @@ namespace Data
                 case BorderFlag.Down:
                 case BorderFlag.All:
                 default:
-                    _gameManager.State = GameState.InGame;
-                    _uiManager.borderHelper.ClearBorderText();
+                    _game.State = GameState.InGame;
+                    _ui.borderHelper.ClearBorderText();
                     break;
             }
         }
@@ -91,7 +91,7 @@ namespace Data
         {
             if (!_helperTextCalled)
             {
-                _uiManager.borderHelper.SetBorderTextLeft();
+                _ui.borderHelper.SetBorderTextLeft();
                 _helperTextCalled = true;
             }
             float yRotation = _playerCamRotation.EulerAngles.y;
@@ -110,14 +110,14 @@ namespace Data
             _borderFlag = BorderFlag.Left;
             _pop = pop;
             _helperTextCalled = false;
-            _uiManager.debug.SpawnDebugObject(LeftBorder);
+            _ui.debug.SpawnDebugObject(LeftBorder);
         }
 
         private void SetRightBorder()
         {
             if (!_helperTextCalled)
             {
-                _uiManager.borderHelper.SetBorderTextRight();
+                _ui.borderHelper.SetBorderTextRight();
                 _helperTextCalled = true;
             }
             float yRotation = _playerCamRotation.EulerAngles.y;
@@ -135,14 +135,14 @@ namespace Data
             _borderFlag = BorderFlag.Right;
             _pop = pop;
             _helperTextCalled = false;
-            _uiManager.debug.SpawnDebugObject(RightBorder);
+            _ui.debug.SpawnDebugObject(RightBorder);
         }
         
         private void SetUpperBorder()
         {
             if (!_helperTextCalled)
             {
-                _uiManager.borderHelper.SetBorderTextUp();
+                _ui.borderHelper.SetBorderTextUp();
                 _helperTextCalled = true;
             }
             float xRotation = _playerCamRotation.EulerAngles.x;
@@ -160,14 +160,14 @@ namespace Data
             _borderFlag = BorderFlag.Up;
             _pop = pop;
             _helperTextCalled = false;
-            _uiManager.debug.SpawnDebugObject(UpperBorder);
+            _ui.debug.SpawnDebugObject(UpperBorder);
         }
 
         private void SetLowerBorder()
         {
             if (!_helperTextCalled)
             {
-                _uiManager.borderHelper.SetBorderTextDown();
+                _ui.borderHelper.SetBorderTextDown();
                 _helperTextCalled = true;
             }
             float xRotation = _playerCamRotation.EulerAngles.x;
@@ -182,10 +182,12 @@ namespace Data
 
             if (_pop != 0) return;
             LowerDegree = xRotation;
-            _borderFlag = BorderFlag.Down;
+            _borderFlag = BorderFlag.All;
             _pop = pop;
             _helperTextCalled = false;
-            _uiManager.debug.SpawnDebugObject(LowerBorder);
+            _game.State = GameState.InGame;
+            _ui.borderHelper.ClearBorderText();
+            _ui.debug.SpawnDebugObject(LowerBorder);
         }
         
         public string ConstructDebugString()

@@ -57,9 +57,6 @@ namespace Managers.SubManagers
             _debugText2.enabled = !_debugText2.enabled;
             _raycastDebugText.enabled = !_raycastDebugText.enabled;
             _enableDebug = !_enableDebug;
-            Debug.Log("DebugText: " +_debugText.enabled + System.Environment.NewLine
-                                + "DebugText2: " +_debugText2.enabled + System.Environment.NewLine
-                                + "RaycastDebugText: " +_raycastDebugText.enabled + System.Environment.NewLine);
         }
 
         public void LogValues()
@@ -80,7 +77,7 @@ namespace Managers.SubManagers
 
         public void SpawnDebugObject(Vector3 position)
         {
-            GameManager.SpawnObject(_debugSpherePrefab, position);
+            GameManager.Instance.SpawnObject(_debugSpherePrefab, position);
         }
     }
 }

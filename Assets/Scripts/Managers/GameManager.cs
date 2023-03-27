@@ -10,6 +10,7 @@ namespace Managers
         private PlayerCamRotation _playerCamRotation;
         private Border _border;
         private UIManager _ui;
+        private GameState _state;
 
         public GameObject shiftForward;
         public GameObject menuShift;
@@ -61,7 +62,15 @@ namespace Managers
             }
         }
 
-        public GameState State { get; set; }
+        public GameState State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                Debug.Log(_state);
+            }
+        }
 
         public void SwitchDebugMode()
         {
@@ -76,12 +85,12 @@ namespace Managers
             _ui.debug.SwitchDebugMode();
         }
 
-        public static GameObject SpawnObject(GameObject original, Vector3 position)
+        public GameObject SpawnObject(GameObject original, Vector3 position)
         {
             return Instantiate(original, position, Quaternion.identity);
         }
 
-        public static void DestroyObject(GameObject obj)
+        public void DestroyObject(GameObject obj)
         {
             Destroy(obj);
         }

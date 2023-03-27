@@ -50,9 +50,7 @@ namespace Managers
         // Update is called once per frame
         void Update()
         {
-            debug.LogValues();
             debug.CamRotationValues(_playerCamRotation.EulerAngles.y, _playerCamRotation.EulerAngles.x);
-            
         }
     }
 }
