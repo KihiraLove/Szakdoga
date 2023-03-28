@@ -11,12 +11,15 @@ namespace GameModes
     public class NormalGame : MonoBehaviour
     {
 
-        private List<GameObject> _objects;
+        private List<Vector3> _positions;
+        private GameObject _currentObjects;
         private ExerciseDictionary _exercises;
         private FileHandler _fileHandler;
         private GameManager _game;
-        private bool isExerciseChosen = true;
-        private bool isExerciseLoaded = false;
+        private UIManager _ui;
+        private bool _isExerciseChosen = true;
+        private int _chosenExercise = -1;
+        private bool _isExerciseLoaded = false;
 
         public GameObject spherePrefab;
         
@@ -24,25 +27,48 @@ namespace GameModes
         {
             _exercises = ExerciseDictionary.Instance;
             _game = GameManager.Instance;
+            _ui = UIManager.Instance;
             _fileHandler = new FileHandler();
             _objects = new List<GameObject>();
         }
 
         private void Update()
         {
-            if (!(_game.State == GameState.InGame && isExerciseChosen)) return;
-            if (!isExerciseLoaded)
+            if (!(_game.State == GameState.InGame && _isExerciseChosen)) return;
+            if (!_isExerciseLoaded)
             {
-                foreach (Vector3 vector in _exercises.GetExercise(1))
-                {
-                    GameObject obj = _game.SpawnObject(spherePrefab, vector);
-                    _objects.Add(obj);
-                }
-
-                Debug.Log("exercise loaded");
-                isExerciseLoaded = true;
+                LoadExercise();
             }
             
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            Vector3 rayDirection = ray.direction * 100f;
+            
+            if (Physics.Raycast(ray.origin, rayDirection, out RaycastHit hit))
+            {
+                 GameObject o = hit.collider.gameObject;
+                _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
+                if(o.name == "Sphere")
+                {
+                    
+                }
+            }
+        }
+        
+        public int ChosenExercise
+        {
+            get => _chosenExercise;
+            set = _chosenExercise = value;
+        }
+
+        private void LoadExercise()
+        {
+            foreach (Vector3 vector in _exercises.GetExercise(_chosenExercise))
+            {
+                _objects.Add(obj);
+            }
+
+                Debug.Log("exercise loaded");
+                _isExerciseLoaded = true;
         }
 
         public Vector3 CalculateNewPosition(Vector3 playerPosition, Vector3 originPosition, Vector3 baseDistancePosition, Vector3 newDistancePosition, Vector3 baseObjectPosition)
