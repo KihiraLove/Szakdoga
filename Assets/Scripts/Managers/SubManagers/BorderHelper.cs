@@ -1,5 +1,4 @@
-﻿using Unity.Tutorials.Core.Editor;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace Managers.SubManagers
 {

@@ -43,7 +43,7 @@ namespace Data
                         _game.SwitchDebugMode();
                         return;
                     case "StartClickBox":
-                        _game.State = GameState.BorderCalculation;
+                        _game.State = GameState.ExerciseMenu;
                         return;
                     case "EditClickBox":
                         _game.State = GameState.EditMode;

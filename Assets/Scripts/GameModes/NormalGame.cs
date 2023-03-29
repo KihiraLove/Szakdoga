@@ -4,6 +4,7 @@ using Data;
 using Enums;
 using Managers;
 using Managers.SubManagers;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameModes
@@ -12,14 +13,15 @@ namespace GameModes
     {
 
         private List<Vector3> _positions;
-        private GameObject _currentObjects;
+        private GameObject _currentObject;
         private ExerciseDictionary _exercises;
         private FileHandler _fileHandler;
         private GameManager _game;
         private UIManager _ui;
         private bool _isExerciseChosen = true;
-        private int _chosenExercise = -1;
+        private int _chosenExercise = 1;
         private bool _isExerciseLoaded = false;
+        private int _index = 0;
 
         public GameObject spherePrefab;
         
@@ -29,7 +31,7 @@ namespace GameModes
             _game = GameManager.Instance;
             _ui = UIManager.Instance;
             _fileHandler = new FileHandler();
-            _objects = new List<GameObject>();
+            _positions = new List<Vector3>();
         }
 
         private void Update()
@@ -38,6 +40,7 @@ namespace GameModes
             if (!_isExerciseLoaded)
             {
                 LoadExercise();
+                _currentObject = _game.SpawnObject(spherePrefab, GetNextVector().Value);
             }
             
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
@@ -47,9 +50,9 @@ namespace GameModes
             {
                  GameObject o = hit.collider.gameObject;
                 _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
-                if(o.name == "Sphere")
+                if(o.name == "Sphere(Clone)")
                 {
-                    
+                    NextObject();
                 }
             }
         }
@@ -57,18 +60,41 @@ namespace GameModes
         public int ChosenExercise
         {
             get => _chosenExercise;
-            set = _chosenExercise = value;
+            set => _chosenExercise = value;
+        }
+
+        private void NextObject()
+        {
+            _game.DestroyObject(_currentObject);
+            Vector3? nextPos = GetNextVector();
+            if (nextPos.HasValue)
+            {
+                _currentObject = _game.SpawnObject(spherePrefab, nextPos.Value);
+                return;
+            }
+            EndExercise();
+        }
+
+        private void EndExercise()
+        {
+            _isExerciseChosen = false;
+            _isExerciseLoaded = false;
+            _game.State = GameState.GameOver;
+        }
+        
+        private Vector3? GetNextVector()
+        {
+            if (_positions == null || _index >= _positions.Count) return null;
+            Vector3 nextVector = _positions[_index];
+            _index++;
+            return nextVector;
         }
 
         private void LoadExercise()
         {
-            foreach (Vector3 vector in _exercises.GetExercise(_chosenExercise))
-            {
-                _objects.Add(obj);
-            }
-
-                Debug.Log("exercise loaded");
-                _isExerciseLoaded = true;
+            _positions = _exercises.GetExercise(_chosenExercise);
+            Debug.Log("exercise loaded"); 
+            _isExerciseLoaded = true;
         }
 
         public Vector3 CalculateNewPosition(Vector3 playerPosition, Vector3 originPosition, Vector3 baseDistancePosition, Vector3 newDistancePosition, Vector3 baseObjectPosition)
