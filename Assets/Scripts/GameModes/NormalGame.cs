@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Data;
 using Enums;
 using Managers;
 using Managers.SubManagers;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameModes
@@ -18,25 +16,25 @@ namespace GameModes
         private FileHandler _fileHandler;
         private GameManager _game;
         private UIManager _ui;
-        private bool _isExerciseChosen = true;
-        private int _chosenExercise = 1;
+        private ExerciseChooser _exerciseChooser;
         private bool _isExerciseLoaded = false;
         private int _index = 0;
 
         public GameObject spherePrefab;
-        
+
         private void Start()
         {
             _exercises = ExerciseDictionary.Instance;
             _game = GameManager.Instance;
             _ui = UIManager.Instance;
+            _exerciseChooser = ExerciseChooser.Instance;
             _fileHandler = new FileHandler();
             _positions = new List<Vector3>();
         }
 
         private void Update()
         {
-            if (!(_game.State == GameState.InGame && _isExerciseChosen)) return;
+            if (_game.State != GameState.InGame) return;
             if (!_isExerciseLoaded)
             {
                 LoadExercise();
@@ -56,12 +54,6 @@ namespace GameModes
                 }
             }
         }
-        
-        public int ChosenExercise
-        {
-            get => _chosenExercise;
-            set => _chosenExercise = value;
-        }
 
         private void NextObject()
         {
@@ -77,14 +69,17 @@ namespace GameModes
 
         private void EndExercise()
         {
-            _isExerciseChosen = false;
             _isExerciseLoaded = false;
             _game.State = GameState.GameOver;
         }
         
         private Vector3? GetNextVector()
         {
-            if (_positions == null || _index >= _positions.Count) return null;
+            if (_positions == null || _index >= _positions.Count)
+            {
+                _index = 0;
+                return null;
+            }
             Vector3 nextVector = _positions[_index];
             _index++;
             return nextVector;
@@ -92,7 +87,7 @@ namespace GameModes
 
         private void LoadExercise()
         {
-            _positions = _exercises.GetExercise(_chosenExercise);
+            _positions = _exercises.GetExercise(_exerciseChooser.ChosenExercise);
             Debug.Log("exercise loaded"); 
             _isExerciseLoaded = true;
         }

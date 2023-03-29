@@ -28,7 +28,7 @@ namespace Managers
             get
             {
                 if (_instance == null)
-                    Debug.LogError("Game Manager got sucked into the void!");
+                    Debug.LogError("Game Manager singleton not instantiated!");
                 return _instance;
             }
         }
