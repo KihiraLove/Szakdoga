@@ -67,9 +67,10 @@ namespace GameModes
             GameObject o = hit.collider.gameObject;
             _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
             if (o.name != "ExerciseClickBox") return;
-            TextMeshProUGUI textMeshPro = o.GetComponentInChildren<TextMeshProUGUI>();
-            ChosenExercise = int.Parse(textMeshPro.text);
+            TextMeshPro tmp = (TextMeshPro)o.transform.parent.GetChild(0).GetComponentInChildren(typeof(TextMeshPro));
+            ChosenExercise = int.Parse(tmp.text);
             DespawnBoxes();
+            _boxArray = new List<GameObject>();
             _game.State = GameState.InGame;
 
         }
@@ -91,18 +92,11 @@ namespace GameModes
                 return;
             }
 
-            GameObject obj2 = _game.SpawnObject(exerciseChooserBoxPrefab, NextVector());
-            TextMeshPro textMeshPro2 = obj2.GetComponent<TextMeshPro>();
-
-            
-            
-            return;
-            
             for (int i = 1; i <= exerciseNum; i++)
             {
                 GameObject obj = _game.SpawnObject(exerciseChooserBoxPrefab, NextVector());
-                TextMeshPro textMeshPro = obj.GetComponent<TextMeshPro>();
-                textMeshPro.text = i.ToString();
+                TextMeshPro tmp = (TextMeshPro)obj.transform.GetChild(0).GetComponentInChildren(typeof(TextMeshPro));
+                tmp.text = i.ToString();
                 _boxArray.Add(obj);
             }
 

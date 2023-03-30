@@ -92,20 +92,20 @@ namespace GameModes
             _isExerciseLoaded = true;
         }
 
-        public Vector3 CalculateNewPosition(Vector3 playerPosition, Vector3 originPosition, Vector3 baseDistancePosition, Vector3 newDistancePosition, Vector3 baseObjectPosition)
+        public Vector3 CalculateNewPosition(Vector3 playerPosition, Vector3 originPosition, Vector3 baseBorderPosition, Vector3 newDistancePosition, Vector3 baseObjectPosition)
         {
             // Calculate the distances between the player and origin positions, and between the base distance and new distance positions
             float playerOriginDistance = Vector3.Distance(playerPosition, originPosition);
-            float baseNewDistance = Vector3.Distance(baseDistancePosition, newDistancePosition);
+            float baseNewDistance = Vector3.Distance(baseBorderPosition, newDistancePosition);
 
             // Calculate the proportion of distance between the player and origin positions that the base distance position represents
-            float baseProportion = Vector3.Distance(playerPosition, baseDistancePosition) / playerOriginDistance;
+            float baseProportion = Vector3.Distance(playerPosition, baseBorderPosition) / playerOriginDistance;
 
             // Calculate the new position based on the proportion of distance between the player and origin positions represented by the new distance position
             Vector3 newPosition = playerPosition + (newDistancePosition - playerPosition) * (baseProportion * baseNewDistance / Vector3.Distance(playerPosition, newDistancePosition));
 
             // Move the base object to the new position
-            Vector3 baseOffset = baseObjectPosition - baseDistancePosition;
+            Vector3 baseOffset = baseObjectPosition - baseBorderPosition;
             Vector3 newBasePosition = newPosition + baseOffset;
 
             return newBasePosition;
