@@ -71,7 +71,7 @@ namespace GameModes
             ChosenExercise = int.Parse(tmp.text);
             DespawnBoxes();
             _boxArray = new List<GameObject>();
-            _game.State = GameState.InGame;
+            _game.State = GameState.BorderCalculation;
 
         }
 
