@@ -17,11 +17,11 @@ namespace GameModes
 
         public int ChosenExercise { get; private set; }
 
-        private int _currentColumn = 0;
-        private int _currentRow = 0;
+        private int _currentX = 0;
+        private int _currentY = 0;
 
-        private const int Columns = 10;
-        private const int Rows = 5;
+        private const int maxX = 10;
+        private const int maxY = 5;
 
         private const float XIncrement = 6.0f;
         private const float YIncrement = -6.0f;
@@ -66,6 +66,7 @@ namespace GameModes
             if (!Physics.Raycast(ray.origin, rayDirection, out RaycastHit hit)) return;
             GameObject o = hit.collider.gameObject;
             _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
+            
             if (o.name != "ExerciseClickBox") return;
             TextMeshPro tmp = (TextMeshPro)o.transform.parent.GetChild(0).GetComponentInChildren(typeof(TextMeshPro));
             ChosenExercise = int.Parse(tmp.text);
@@ -100,30 +101,30 @@ namespace GameModes
                 _boxArray.Add(obj);
             }
 
-            _currentColumn = 0;
-            _currentRow = 0;
+            _currentX = 0;
+            _currentY = 0;
         }
 
         private Vector3 NextVector()
         {
-            if (_currentColumn < Columns && _currentRow < Rows)
+            if (_currentX < maxX && _currentY < maxY)
             {
                 Vector3 nextPosition = new Vector3(
-                    _startPosition.x + _currentRow * XIncrement,
-                    _startPosition.y + _currentColumn * YIncrement,
+                    _startPosition.x + _currentX * XIncrement,
+                    _startPosition.y + _currentY * YIncrement,
                     _startPosition.z
                 );
-                _currentRow++;
+                _currentX++;
 
-                if (_currentRow < Columns) return nextPosition;
-                _currentRow = 0;
-                _currentColumn++;
+                if (_currentX < maxX) return nextPosition;
+                _currentX = 0;
+                _currentY++;
 
                 return nextPosition;
             }
 
-            _currentColumn = 0;
-            _currentRow = 0;
+            _currentX = 0;
+            _currentY = 0;
             return Vector3.zero;
         }
     }

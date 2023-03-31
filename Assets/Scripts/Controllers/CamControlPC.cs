@@ -1,3 +1,4 @@
+ using System;
  using Managers;
  using UnityEngine;
 
@@ -10,16 +11,14 @@ namespace Controllers
 
         private float _xRotation;
         private float _yRotation;
-
-        // Start is called before the first frame update
-        void Start()
+        
+        private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
-        // Update is called once per frame
-        void Update()
+        
+        private void Update()
         {
             RotateCam();
         }
@@ -36,5 +35,10 @@ namespace Controllers
         }
 
 
+        public void SetSensitivity(float x, float y)
+        {
+            senX = x;
+            senY = y;
+        }
     }
 }
