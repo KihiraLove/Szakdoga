@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Controllers;
 using Data;
 using Enums;
 using Managers;
@@ -59,7 +60,7 @@ namespace GameModes
         {
             if (_game.State != GameState.ExerciseMenu) return;
             if (_boxArray.Count == 0) SpawnBoxes();
-            if (!Input.GetMouseButtonDown(0)) return;
+            if (!MainController.Instance.IsMainInput()) return;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             Vector3 rayDirection = ray.direction * 100f;
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SpatialTracking;
 
 namespace Controllers
 {
@@ -12,7 +13,7 @@ namespace Controllers
         
         private static MainController _instance;
 
-        private static MainController Instance
+        public static MainController Instance
         {
             get
             {
@@ -36,7 +37,8 @@ namespace Controllers
                     _pcControl.SetSensitivity(senX, senY);
                     break;
                 case RuntimePlatform.Android:
-                    _vrControl = gameObject.AddComponent<CamControlVR>();
+                    TrackedPoseDriver tpd = gameObject.AddComponent<TrackedPoseDriver>();
+                    tpd.trackingType = TrackedPoseDriver.TrackingType.RotationOnly;
                     break;
                 default:
                     Application.Quit();
@@ -51,7 +53,7 @@ namespace Controllers
 
         public bool IsMainInput()
         {
-            return Input.GetMouseButtonDown(0) || Input.GetButton("Tap");
+            return Input.GetMouseButtonDown(0) || Input.GetButton("primary2DAxisTouch");
         }
     }
 }
