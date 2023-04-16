@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using Controllers;
+using Enums;
 using Managers;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace Data
             {
                 Debug.DrawRay(ray.origin, rayDirection, Color.red);
             }
-            if (!Input.GetMouseButtonDown(0)) return;
+            if (!MainController.Instance.IsMainInput()) return;
             if (Physics.Raycast(ray.origin, rayDirection, out RaycastHit hit))
             {
                 GameObject o = hit.collider.gameObject;
