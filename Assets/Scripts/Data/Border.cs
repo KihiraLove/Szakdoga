@@ -41,7 +41,7 @@ namespace Data
         }
         
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _borderRotationDegrees = new float[] { 0, 0, 0, 0 };
             _objectCoordinates = ObjectCoordinates.Instance;
@@ -55,7 +55,7 @@ namespace Data
         }
 
         // Update is called once per frame
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             SetBorders();
         }
@@ -204,13 +204,13 @@ namespace Data
             return res;
         }
 
-        public Vector3 LeftBorder { get; private set; }
+        private Vector3 LeftBorder { get; set; }
 
-        public Vector3 RightBorder { get; private set; }
+        private Vector3 RightBorder { get; set; }
 
-        public Vector3 UpperBorder { get; private set; }
+        private Vector3 UpperBorder { get; set; }
 
-        public Vector3 LowerBorder { get; private set; }
+        private Vector3 LowerBorder { get; set; }
 
         public float LeftDegree
         {
