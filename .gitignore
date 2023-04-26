@@ -9,6 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/neckGame_BackUpThisFolder_ButDontShipItWithYourGame/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -74,3 +75,6 @@ crashlytics-build.properties
 
 # User Generated Content
 /[Aa]ssets/[Ee]xercises/
+
+#Office temp files
+*~$*

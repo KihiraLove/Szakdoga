@@ -11,8 +11,8 @@ namespace Managers
         private Border _border;
         private UIManager _ui;
         private GameState _state;
-
-        public GameObject shiftForward;
+                
+        public GameObject shiftForward;     
         public GameObject menuShift;
         
         public GameObject debugPrefab;
