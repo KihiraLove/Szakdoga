@@ -50,6 +50,7 @@ namespace Data
 
         public List<Vector3> GetExercise(int exerciseNumber)
         {
+            Debug.Log("Exercise index: " + (exerciseNumber - 1));
             return _exercises.ElementAt(exerciseNumber - 1);
         }
 

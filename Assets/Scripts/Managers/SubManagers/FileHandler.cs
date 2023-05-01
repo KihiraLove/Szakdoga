@@ -25,7 +25,7 @@ namespace Managers.SubManagers
         public string SerializeVectorListToJson(List<Vector3> vectorList)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("{\"vectors\":[");
+            sb.Append("{\"Vector3\":[");
 
             for (int i = 0; i < vectorList.Count; i++)
             {
@@ -51,16 +51,16 @@ namespace Managers.SubManagers
 
         public List<Vector3> DeserializeJsonToVectorList(string json)
         {
-            int startIndex = json.IndexOf("[{") + 1;
-            int endIndex = json.LastIndexOf("}]");
+            int startIndex = json.IndexOf("[{", StringComparison.Ordinal) + 1;
+            int endIndex = json.LastIndexOf("}]", StringComparison.Ordinal);
 
             string[] vectorJsonStrings = json.Substring(startIndex, endIndex - startIndex)
-                .Split(new string[] { "},{" }, StringSplitOptions.RemoveEmptyEntries);
+                .Split(new[] { "},{" }, StringSplitOptions.RemoveEmptyEntries);
 
             return (from vectorJson in vectorJsonStrings
                 select vectorJson.Replace("{", "")
                     .Replace("}", "")
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 into components
                 let x = float.Parse(components[0].Split(':')[1])
                 let y = float.Parse(components[1].Split(':')[1])

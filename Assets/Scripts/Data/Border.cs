@@ -204,13 +204,13 @@ namespace Data
             return res;
         }
 
-        private Vector3 LeftBorder { get; set; }
+        public Vector3 LeftBorder { get; private set; }
 
-        private Vector3 RightBorder { get; set; }
+        public Vector3 RightBorder { get; private set; }
 
-        private Vector3 UpperBorder { get; set; }
+        public Vector3 UpperBorder { get; private set; }
 
-        private Vector3 LowerBorder { get; set; }
+        public Vector3 LowerBorder { get; private set; }
 
         public float LeftDegree
         {
@@ -218,7 +218,9 @@ namespace Data
             set
             {
                 _borderRotationDegrees[0] = value;
-                LeftBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                Vector3 tempBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                tempBorder.y = 60;
+                LeftBorder = tempBorder;
             }
         }
         
@@ -228,7 +230,9 @@ namespace Data
             set
             {
                 _borderRotationDegrees[1] = value;
-                RightBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                Vector3 tempBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                tempBorder.y = 60;
+                RightBorder = tempBorder;
             }
         }
         
@@ -238,7 +242,9 @@ namespace Data
             set
             {
                 _borderRotationDegrees[2] = value;
-                UpperBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                Vector3 tempBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                tempBorder.x = 0;
+                UpperBorder = tempBorder;
             }
         }
         
@@ -248,7 +254,9 @@ namespace Data
             set
             {
                 _borderRotationDegrees[3] = value;
-                LowerBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                Vector3 tempBorder = _playerCamRotation.CameraPosition + _playerCamRotation.ForwardVector * _objectCoordinates.SpawnDistanceFromPlayer;
+                tempBorder.x = 0;
+                LowerBorder = tempBorder;
             }
         }
     }

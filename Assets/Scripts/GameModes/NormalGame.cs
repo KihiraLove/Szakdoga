@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Data;
 using Enums;
 using Managers;
 using Managers.SubManagers;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameModes
@@ -87,28 +89,182 @@ namespace GameModes
 
         private void LoadExercise()
         {
-            _positions = _exercises.GetExercise(_exerciseChooser.ChosenExercise);
+            _positions = ScalePositionsToBorders(_exercises.GetExercise(_exerciseChooser.ChosenExercise));
             Debug.Log("exercise loaded"); 
             _isExerciseLoaded = true;
         }
 
-        public Vector3 CalculateNewPosition(Vector3 playerPosition, Vector3 originPosition, Vector3 baseBorderPosition, Vector3 newDistancePosition, Vector3 baseObjectPosition)
+        private List<Vector3> ScalePositionsToBorders(List<Vector3> positions)
         {
-            // Calculate the distances between the player and origin positions, and between the base distance and new distance positions
-            float playerOriginDistance = Vector3.Distance(playerPosition, originPosition);
-            float baseNewDistance = Vector3.Distance(baseBorderPosition, newDistancePosition);
+            List<Vector3> scaledPositions = new List<Vector3>(positions);
 
-            // Calculate the proportion of distance between the player and origin positions that the base distance position represents
-            float baseProportion = Vector3.Distance(playerPosition, baseBorderPosition) / playerOriginDistance;
+            scaledPositions = ScalePositionsLeftAndRight(scaledPositions);
+            scaledPositions = ScalePositionsUpAndDown(scaledPositions);
+            
+            return scaledPositions;
+        }
 
-            // Calculate the new position based on the proportion of distance between the player and origin positions represented by the new distance position
-            Vector3 newPosition = playerPosition + (newDistancePosition - playerPosition) * (baseProportion * baseNewDistance / Vector3.Distance(playerPosition, newDistancePosition));
+        private List<Vector3> ScalePositionsUpAndDown(List<Vector3> positions)
+        {
+            positions = ScalePositionsUp(positions);
+            positions = ScalePositionsDown(positions);
+            return positions;
+        }
+        
+        private List<Vector3> ScalePositionsLeftAndRight(List<Vector3> positions)
+        {
+            positions = ScalePositionsLeft(positions);
+            positions = ScalePositionsRight(positions);
+            return positions;
+        }
 
-            // Move the base object to the new position
-            Vector3 baseOffset = baseObjectPosition - baseBorderPosition;
-            Vector3 newBasePosition = newPosition + baseOffset;
+        private List<Vector3> ScalePositionsRight(List<Vector3> positions)
+        {
+            ObjectCoordinates coords = ObjectCoordinates.Instance;
+            Border border = Border.Instance;
+            
+            Vector3 player = transform.position;
+            Vector3 origin = coords.MenuShiftPosition;
 
-            return newBasePosition;
+            Vector3 playerOriginVector = origin - player;
+            Vector3 playerBaseBorderVector = coords.BaseRightBorder - player;
+            Vector3 playerNewBorderVector = border.RightBorder - player;
+
+            float alpha = Vector3.Angle(playerOriginVector, playerBaseBorderVector);
+            float gamma = Vector3.Angle(playerOriginVector, playerNewBorderVector);
+
+            for(int i = 0; i < positions.Count; i++)
+            {
+                if (!(positions[i].x > 0)) continue;
+                
+                Vector3 positionNormalizedToPlane = new Vector3(positions[i].x, 60, positions[i].z);
+                Vector3 playerBaseObjectVector = positionNormalizedToPlane - player;
+                
+                float r = coords.SpawnDistanceFromPlayer;
+                float beta = Vector3.Angle(playerOriginVector, playerBaseObjectVector);
+                float ro = (gamma * (beta / alpha));
+                
+                ro = 90 - ro;
+                double roRads = (Math.PI / 180) * ro;
+                
+                double x = r * Math.Cos(roRads);
+                double z = r * Math.Sin(roRads) * (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
+            
+                Vector3 newVector = new Vector3((float)x, positions[i].y, (float)z);
+                positions[i] = newVector;
+            }
+
+            return positions;
+        }
+
+        private List<Vector3> ScalePositionsLeft(List<Vector3> positions)
+        {
+            ObjectCoordinates coords = ObjectCoordinates.Instance;
+            Border border = Border.Instance;
+            
+            Vector3 player = transform.position;
+            Vector3 origin = coords.MenuShiftPosition;
+
+            Vector3 playerOriginVector = origin - player;
+            Vector3 playerBaseBorderVector = coords.BaseLeftBorder - player;
+            Vector3 playerNewBorderVector = border.LeftBorder - player;
+
+            float alpha = Vector3.Angle(playerOriginVector, playerBaseBorderVector);
+            float gamma = Vector3.Angle(playerOriginVector, playerNewBorderVector);
+            
+            for(int i = 0; i < positions.Count; i++)
+            {
+                if (!(positions[i].x < 0)) continue;
+                
+                Vector3 positionNormalizedToPlane = new Vector3(positions[i].x, 60, positions[i].z);
+                Vector3 playerBaseObjectVector = positionNormalizedToPlane - player;
+                
+                float r = coords.SpawnDistanceFromPlayer;
+                float beta = Vector3.Angle(playerOriginVector, playerBaseObjectVector);
+                float ro = (gamma * (beta / alpha));
+                double roRads = (Math.PI / 180) * ro;
+
+                double z = r * Math.Cos(roRads) * (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
+                double x = r * Math.Sin(roRads);
+            
+                Vector3 newVector = new Vector3((float)x * -1, positions[i].y, (float)z);
+                positions[i] = newVector;
+            }
+
+            
+            return positions;
+        }
+
+        private List<Vector3> ScalePositionsUp(List<Vector3> positions)
+        {
+            ObjectCoordinates coords = ObjectCoordinates.Instance;
+            Border border = Border.Instance;
+            
+            Vector3 player = transform.position;
+            Vector3 origin = coords.MenuShiftPosition;
+
+            Vector3 playerOriginVector = origin - player;
+            Vector3 playerBaseBorderVector = coords.BaseUpperBorder - player;
+            Vector3 playerNewBorderVector = border.UpperBorder - player;
+
+            float alpha = Vector3.Angle(playerOriginVector, playerBaseBorderVector);
+            float gamma = Vector3.Angle(playerOriginVector, playerNewBorderVector);
+            
+            for(int i = 0; i < positions.Count; i++)
+            {
+                if (!(positions[i].y > 60)) continue;
+                Vector3 positionNormalizedToPlane = new Vector3(0, positions[i].y, positions[i].z);
+                Vector3 playerBaseObjectVector = positionNormalizedToPlane - player;
+                
+                float r = coords.SpawnDistanceFromPlayer;
+                float beta = Vector3.Angle(playerOriginVector, playerBaseObjectVector);
+                float ro = (gamma * (beta / alpha));
+                double roRads = (Math.PI / 180) * ro;
+
+                double z = r * Math.Cos(ro) * (Math.Clamp(Math.Abs(positions[i].x - 60), 15, 50) / 50);;
+                double y = r * Math.Sin(ro);
+            
+                Vector3 newVector = new Vector3(positions[i].x, (float)y, (float)z);
+                positions[i] = newVector;
+            }
+
+            return positions;
+        }
+
+        private List<Vector3> ScalePositionsDown(List<Vector3> positions)
+        {
+            ObjectCoordinates coords = ObjectCoordinates.Instance;
+            Border border = Border.Instance;
+            
+            Vector3 player = transform.position;
+            Vector3 origin = coords.MenuShiftPosition;
+
+            Vector3 playerOriginVector = origin - player;
+            Vector3 playerBaseBorderVector = coords.BaseLowerBorder - player;
+            Vector3 playerNewBorderVector = border.LowerBorder - player;
+
+            float alpha = Vector3.Angle(playerOriginVector, playerBaseBorderVector);
+            float gamma = Vector3.Angle(playerOriginVector, playerNewBorderVector);
+            
+            for(int i = 0; i < positions.Count; i++)
+            {
+                if (!(positions[i].y < 60)) continue;
+                Vector3 positionNormalizedToPlane = new Vector3(0, positions[i].y, positions[i].z);
+                Vector3 playerBaseObjectVector = positionNormalizedToPlane - player;
+                
+                float r = coords.SpawnDistanceFromPlayer;
+                float beta = Vector3.Angle(playerOriginVector, playerBaseObjectVector);
+                float ro = (gamma * (beta / alpha));
+                double roRads = (Math.PI / 180) * ro;
+
+                double z = r * Math.Cos(ro) * (Math.Clamp(Math.Abs(positions[i].x - 60), 15, 50) / 50);;
+                double y = r * Math.Sin(ro);
+            
+                Vector3 newVector = new Vector3(positions[i].x, (float)y * -1, (float)z);
+                positions[i] = newVector;
+            }
+
+            return positions;
         }
     }
 }

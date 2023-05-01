@@ -71,6 +71,7 @@ namespace GameModes
             if (o.name != "ExerciseClickBox") return;
             TextMeshPro tmp = (TextMeshPro)o.transform.parent.GetChild(0).GetComponentInChildren(typeof(TextMeshPro));
             ChosenExercise = int.Parse(tmp.text);
+            Debug.Log("Exercise chosen: " + ChosenExercise);
             DespawnBoxes();
             _boxArray = new List<GameObject>();
             _game.State = GameState.BorderCalculation;

@@ -25,7 +25,13 @@ namespace Data
         public GameObject shiftForward;
 
         public GameObject shiftUp;
-        
+
+        public Vector3 MenuShiftPosition => menuShift.transform.position;
+        public Vector3 BaseLeftBorder => new(-50, 60, 0);
+        public Vector3 BaseRightBorder => new(50, 60, 0);
+        public Vector3 BaseUpperBorder => new(0, 110, 0);
+        public Vector3 BaseLowerBorder => new(0, 10, 0);
+
         public float SpawnDistanceFromPlayer => shiftForward.transform.localPosition.z + menuShift.transform.localPosition.z;
     }
 }
