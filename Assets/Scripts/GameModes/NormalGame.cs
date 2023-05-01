@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using Enums;
 using Managers;
-using Managers.SubManagers;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameModes
@@ -15,7 +14,6 @@ namespace GameModes
         private List<Vector3> _positions;
         private GameObject _currentObject;
         private ExerciseDictionary _exercises;
-        private FileHandler _fileHandler;
         private GameManager _game;
         private UIManager _ui;
         private ExerciseChooser _exerciseChooser;
@@ -30,7 +28,6 @@ namespace GameModes
             _game = GameManager.Instance;
             _ui = UIManager.Instance;
             _exerciseChooser = ExerciseChooser.Instance;
-            _fileHandler = new FileHandler();
             _positions = new List<Vector3>();
         }
 
@@ -89,9 +86,14 @@ namespace GameModes
 
         private void LoadExercise()
         {
-            _positions = ScalePositionsToBorders(_exercises.GetExercise(_exerciseChooser.ChosenExercise));
+            _positions = NormalizePositions(ScalePositionsToBorders(_exercises.GetExercise(_exerciseChooser.ChosenExercise)));
             Debug.Log("exercise loaded"); 
             _isExerciseLoaded = true;
+        }
+
+        private List<Vector3> NormalizePositions(List<Vector3> positions)
+        {
+            return positions.Select(position => transform.position + Vector3.Normalize(position - transform.position) * ObjectCoordinates.Instance.SpawnDistanceFromPlayer).ToList();
         }
 
         private List<Vector3> ScalePositionsToBorders(List<Vector3> positions)
@@ -114,7 +116,7 @@ namespace GameModes
         private List<Vector3> ScalePositionsUpAndDown(List<Vector3> positions)
         {
             positions = ScalePositionsUp(positions);
-            //positions = ScalePositionsDown(positions);
+            positions = ScalePositionsDown(positions);
             return positions;
         }
 
@@ -185,9 +187,9 @@ namespace GameModes
                 double roRads = (Math.PI / 180) * ro;
 
                 double z = r * Math.Cos(roRads); //* (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
-                double x = r * Math.Sin(roRads);
+                double x = r * Math.Sin(roRads) * -1;
             
-                Vector3 newVector = new Vector3((float)x * -1, positions[i].y, (float)z);
+                Vector3 newVector = new Vector3((float)x, positions[i].y, (float)z);
                 positions[i] = newVector;
             }
 
