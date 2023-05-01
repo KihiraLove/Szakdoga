@@ -104,17 +104,17 @@ namespace GameModes
             return scaledPositions;
         }
 
-        private List<Vector3> ScalePositionsUpAndDown(List<Vector3> positions)
-        {
-            positions = ScalePositionsUp(positions);
-            positions = ScalePositionsDown(positions);
-            return positions;
-        }
-        
         private List<Vector3> ScalePositionsLeftAndRight(List<Vector3> positions)
         {
             positions = ScalePositionsLeft(positions);
             positions = ScalePositionsRight(positions);
+            return positions;
+        }
+        
+        private List<Vector3> ScalePositionsUpAndDown(List<Vector3> positions)
+        {
+            positions = ScalePositionsUp(positions);
+            //positions = ScalePositionsDown(positions);
             return positions;
         }
 
@@ -148,7 +148,7 @@ namespace GameModes
                 double roRads = (Math.PI / 180) * ro;
                 
                 double x = r * Math.Cos(roRads);
-                double z = r * Math.Sin(roRads) * (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
+                double z = r * Math.Sin(roRads); // * (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
             
                 Vector3 newVector = new Vector3((float)x, positions[i].y, (float)z);
                 positions[i] = newVector;
@@ -184,7 +184,7 @@ namespace GameModes
                 float ro = (gamma * (beta / alpha));
                 double roRads = (Math.PI / 180) * ro;
 
-                double z = r * Math.Cos(roRads) * (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
+                double z = r * Math.Cos(roRads); //* (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
                 double x = r * Math.Sin(roRads);
             
                 Vector3 newVector = new Vector3((float)x * -1, positions[i].y, (float)z);
@@ -221,8 +221,8 @@ namespace GameModes
                 float ro = (gamma * (beta / alpha));
                 double roRads = (Math.PI / 180) * ro;
 
-                double z = r * Math.Cos(ro) * (Math.Clamp(Math.Abs(positions[i].x - 60), 15, 50) / 50);;
-                double y = r * Math.Sin(ro);
+                double z = r * Math.Cos(roRads); //* (Math.Clamp(Math.Abs(positions[i].y - 60), 15, 50) / 50);
+                double y = r * Math.Sin(roRads) + 60;
             
                 Vector3 newVector = new Vector3(positions[i].x, (float)y, (float)z);
                 positions[i] = newVector;
@@ -257,10 +257,10 @@ namespace GameModes
                 float ro = (gamma * (beta / alpha));
                 double roRads = (Math.PI / 180) * ro;
 
-                double z = r * Math.Cos(ro) * (Math.Clamp(Math.Abs(positions[i].x - 60), 15, 50) / 50);;
-                double y = r * Math.Sin(ro);
+                double z = r * Math.Cos(roRads); // * (Math.Clamp(Math.Abs(positions[i].y - 60), 15, 50) / 50);
+                double y = r * Math.Sin(roRads) * -1 + 60;
             
-                Vector3 newVector = new Vector3(positions[i].x, (float)y * -1, (float)z);
+                Vector3 newVector = new Vector3(positions[i].x, (float)y, (float)z);
                 positions[i] = newVector;
             }
 
