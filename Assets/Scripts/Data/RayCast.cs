@@ -34,28 +34,23 @@ namespace Data
                 Debug.DrawRay(ray.origin, rayDirection, Color.red);
             }
             if (!MainController.Instance.IsMainInput()) return;
-            if (Physics.Raycast(ray.origin, rayDirection, out RaycastHit hit))
+            if (!Physics.Raycast(ray.origin, rayDirection, out RaycastHit hit)) return;
+            GameObject o = hit.collider.gameObject;
+            _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
+            switch (o.name)
             {
-                GameObject o = hit.collider.gameObject;
-                _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
-                switch (o.name)
-                {
-                    case "DebugClickBox":
-                        _game.SwitchDebugMode();
-                        return;
-                    case "StartClickBox":
-                        _game.State = GameState.ExerciseMenu;
-                        return;
-                    case "EditClickBox":
-                        _game.State = GameState.EditMode;
-                        return;
-                    case "Sphere":
-                            
-                        return;
-                    case "ExitClickBox":
-                        Application.Quit();
-                        return;
-                }
+                case "DebugClickBox":
+                    _game.SwitchDebugMode();
+                    return;
+                case "StartClickBox":
+                    _game.State = GameState.ExerciseMenu;
+                    return;
+                case "EditClickBox":
+                    _game.State = GameState.EditMode;
+                    return;
+                case "ExitClickBox":
+                    Application.Quit();
+                    return;
             }
         }
     }

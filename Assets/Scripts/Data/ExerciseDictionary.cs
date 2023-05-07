@@ -43,7 +43,7 @@ namespace Data
             {
                 string json = File.ReadAllText(fileName);
                 List<Vector3> exercise = fileHandler.DeserializeJsonToVectorList(json);
-                _exercises.Add(exercise);
+                AddExercise(exercise);
             }
             Debug.Log("There are " + _exercises.Count + " exercises loaded from JSON");
         }

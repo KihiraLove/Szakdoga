@@ -41,16 +41,13 @@ namespace GameModes
             }
             
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-            Vector3 rayDirection = ray.direction * 100f;
-            
-            if (Physics.Raycast(ray.origin, rayDirection, out RaycastHit hit))
+
+            if (!Physics.Raycast(ray.origin, ray.direction * 100f, out RaycastHit hit)) return;
+            GameObject o = hit.collider.gameObject;
+            _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
+            if(o.name == "Sphere(Clone)")
             {
-                 GameObject o = hit.collider.gameObject;
-                _ui.debug.RaycastDebugText = "Ray collided with " + o.name;
-                if(o.name == "Sphere(Clone)")
-                {
-                    NextObject();
-                }
+                NextObject();
             }
         }
 
@@ -93,7 +90,10 @@ namespace GameModes
 
         private List<Vector3> NormalizePositions(List<Vector3> positions)
         {
-            return positions.Select(position => transform.position + Vector3.Normalize(position - transform.position) * ObjectCoordinates.Instance.SpawnDistanceFromPlayer).ToList();
+            return positions.Select(
+                position =>
+                    transform.position + Vector3.Normalize(position - transform.position) * ObjectCoordinates.Instance.SpawnDistanceFromPlayer)
+                .ToList();
         }
 
         private List<Vector3> ScalePositionsToBorders(List<Vector3> positions)
@@ -186,14 +186,12 @@ namespace GameModes
                 float ro = (gamma * (beta / alpha));
                 double roRads = (Math.PI / 180) * ro;
 
-                double z = r * Math.Cos(roRads); //* (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
+                double z = r * Math.Cos(roRads);
                 double x = r * Math.Sin(roRads) * -1;
             
                 Vector3 newVector = new Vector3((float)x, positions[i].y, (float)z);
                 positions[i] = newVector;
             }
-
-            
             return positions;
         }
 
