@@ -75,6 +75,8 @@ crashlytics-build.properties
 
 # User Generated Content
 /[Aa]ssets/[Ee]xercises/
+*.zip
+/Documents/Sources/*
 
 #Office temp files
 *~$*
