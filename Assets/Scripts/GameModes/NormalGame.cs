@@ -150,7 +150,7 @@ namespace GameModes
                 double roRads = (Math.PI / 180) * ro;
                 
                 double x = r * Math.Cos(roRads);
-                double z = r * Math.Sin(roRads); // * (Math.Clamp(Math.Abs(positions[i].x), 15, 50) / 50);
+                double z = r * Math.Sin(roRads);
             
                 Vector3 newVector = new Vector3((float)x, positions[i].y, (float)z);
                 positions[i] = newVector;
